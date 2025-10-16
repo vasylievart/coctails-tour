@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const bookingSchema = z.object({
-  fullName: z
+  full_name: z
     .string()
     .trim()
     .regex(/^[A-Z][a-z]*(?:\s[A-Z][a-z]*)*$/, "Each word must start with a capital letter")
@@ -13,7 +13,7 @@ export const bookingSchema = z.object({
       /^(?!\.)(?!.*\.\.)([a-z0-9_'+\-\.]*)[a-z0-9_+-]@([a-z0-9][a-z0-9\-]*\.)+[a-z]{2,}$/i,
       "Invalid email address"
     ),
-  countryCode: z
+  country_code: z
     .string()
     .regex(/^\+\d{1,4}$/, "Invalid country code"),
   phone: z

@@ -1,0 +1,443 @@
+[
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "17:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "18:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "18:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "19:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "19:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "20:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "20:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "21:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-14",
+    "slot_hour": "21:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "17:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "18:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "18:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "19:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "19:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "20:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "20:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "21:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-15",
+    "slot_hour": "21:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "17:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "18:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "18:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "19:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "19:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "20:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "20:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "21:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-16",
+    "slot_hour": "21:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "17:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "18:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "18:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "19:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "19:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "20:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "20:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "21:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-17",
+    "slot_hour": "21:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "17:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "18:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "18:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "19:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "19:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "20:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "20:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "21:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-18",
+    "slot_hour": "21:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "17:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "18:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "18:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "19:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "19:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "20:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "20:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "21:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-19",
+    "slot_hour": "21:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "17:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "18:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "18:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "19:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "19:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "20:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "20:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "21:00:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  },
+  {
+    "slot_date": "2025-10-20",
+    "slot_hour": "21:30:00",
+    "capacity_total": 8,
+    "capacity_left": 8,
+    "disabled": false
+  }
+]

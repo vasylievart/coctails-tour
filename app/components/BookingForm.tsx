@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar,CalendarIcon,Pen, X } from "lucide-react";
 import {
@@ -18,9 +18,12 @@ import { usePersistentState } from "../hooks/usePresistentState";
 import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import toast from "react-hot-toast";
 
-//TODO: Chenging time and date of event directly in form
-//      Fix problem with availble date (don't use past months
+
+
+
+//TODO: 
 //      Fix Privacy Policy and Term of Srvice
 //      Create FAQ component
 //      Split BookingForm into smaller components
@@ -32,39 +35,119 @@ import "react-day-picker/dist/style.css";
 
 
 const BookingForm = () => {
-  const currentYear = new Date().getFullYear();
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  const currentDay = today.getDate();
+  console.log("current day", currentDay);
   const [year, setYear] = usePersistentState<number>("booking-year", currentYear);
-  const [month, setMonth] = usePersistentState<number | null>("booking-month", null);
-  const [day, setDay] = usePersistentState<number | null>("booking-day", null);
+  const [month, setMonth] = usePersistentState<number | null>("booking-month", currentMonth);
+  const [day, setDay] = usePersistentState<number | null>("booking-day", currentDay);
+  console.log("Present day:", day)
   const [availableDays, setAvailableDays] = useState<number[]>([]);
-  const [selectedHour, setSelectedHour] = usePersistentState<string | null>("booking-hour", null);
+  const [selectedHour, setSelectedHour] = usePersistentState<string>("booking-hour", "");
   const [showPopup, setShowPopup] = useState(false);
   const [isEditable, setIsEditable] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [showCalendar, setShowCalendar] = useState(false);
-  //const date = `${day}.${month! + 1}.${year}`;
+  const [capacity, setCapacity] = usePersistentState<number>("people-quantity", 0);
+  const [places, setAvalablePlaces] = usePersistentState<number[]>("booking-places", [0]);
+  const [bookedPlaces, setBookedPlaces] = usePersistentState<number>("booked-places", 0);
   const [tempDate, setTempDate] = useState<string>("");
-  console.log("Initial tempDate :",tempDate);
+  const [availableHour, setAvailableHours] = useState<string[]>([]);
+  console.log("Initial tempDate :", tempDate.replace(/\./g, "-").split("-").reverse().join("-"));
   const [formData, setFormData] = usePersistentState("booking-form", {
-    fullName: "",
+    full_name: "",
     email: "",
-    countryCode: "",
+    country_code: "",
     phone: "",
     comment: "",
   });
+  const isoDate = tempDate
+  .replace(/\./g, "-")
+  .split("-")
+  .reverse()
+  .join("-")
+  .trim();
+ 
 
   useEffect(() => {
-  if (day && month !== null && year) {
-    const date = `${day}.${month + 1}.${year}`;
-    setTempDate(date);
-    console.log("Initial date :", date );
-  }
-}, [day, month, year]);
+    if (day && month !== null && year) {
+      const date = `${day}.${month + 1}.${year}`;
+      setTempDate(date);
+      console.log("Initial date :", date );
+    }
+  }, [day, month, year]);
+ 
+  useEffect(() => {
+      const getHours = async () => {
+        if (!isoDate) return;
 
-  const hours = ["17:00","18:00","19:30","21:00","22:30"];
+        const { data, error } = await supabase
+          .from("slots")
+          .select("slot_hour, capacity_left")
+          .eq("slot_date", isoDate)
+          .gt("capacity_left", 0)
+          .eq("disabled", false);
+          console.log("Is it format", JSON.stringify(isoDate));
+
+          console.log("Type of formattedDate :", typeof(isoDate));
+        
+        if (error) {
+          console.error("Error fetching hours:", error.message);
+          return;
+        }
+        
+        if (data) {
+          console.log("Is there",data);
+          const hours = data.map(item => item.slot_hour);
+          console.log(hours);
+          setAvailableHours(hours);
+        }
+      };
+
+    getHours();
+  }, [tempDate]);
+
+  
+  useEffect(() => {
+  if (!isoDate || !selectedHour) return;
+
+  const getCapacity = async () => {
+    const { data, error } = await supabase
+      .from("slots")
+      .select("capacity_left")
+      .eq("slot_date", isoDate)
+      .eq("slot_hour", selectedHour)
+      .single();
+
+    if (!error && data) setCapacity(data.capacity_left);
+  };
+
+  getCapacity();
+}, [tempDate, selectedHour]);
+
+
+  useMemo(() => {
+    const createPlaces = () => {
+    const pl = [];
+    for ( let i = 1; i<capacity+1; i++ ) {
+      
+      pl.push(i);
+    }
+    setAvalablePlaces(pl)
+    return places;
+  }
+  createPlaces();
+  },[capacity])
+
+  console.log("People:", bookedPlaces);
+ 
+
   const isoAndCode = countryPhoneCodes;
   const months = listOfMonths;
   const price = 150;
+  const totalAmount = price * bookedPlaces;
 
   useEffect(() => {
     if (month !== null) {
@@ -76,18 +159,20 @@ const BookingForm = () => {
     }
   }, [year, month]);
 
+  useMemo(() => {
+    setDay(currentDay)
+  },[currentDay]);
+
   const handleBook = () => {
     if (!day || !selectedHour) return;
     setShowPopup(true);
   };
 
   function handleHourChange(newHour: string) {
-  const previousHour = selectedHour;
   setSelectedHour(newHour);
   setIsEditable(false);
   }
  
-
   const handleCalendarSelect = (newDate: Date | undefined) => {
   if (!newDate) return;
 
@@ -104,35 +189,65 @@ const BookingForm = () => {
   setShowCalendar(false);
   setIsEditable(false);
   };
-
   
-  const handleConfirm = async  (e:any) => {
-    console.log({
-      date: `${day}.${month! + 1}.${year}`,
-      time: selectedHour,
-      price,
-      ...formData,
-    });
-    e.preventDefault()
+  const handleConfirm = async (e: any) => {
+    e.preventDefault();
 
     const result = bookingSchema.safeParse(formData);
-
-    const validateData = result.data;
-
     if (!result.success) {
-      console.error("Fail validation data: ", result.error.format);
-      return
+      console.error("❌ Validation failed:", result.error.issues);
+      return;
     }
+  
+    const validatedData = result.data;
+   
+    try {
+      const { data, error } = await supabase
+      .rpc('book_slot_atomic', {
+        p_comment: validatedData.comment, 
+        p_country_code: validatedData.country_code, 
+        p_email: validatedData.email, 
+        p_full_name: validatedData.full_name, 
+        p_people_count: bookedPlaces, 
+        p_phone: validatedData.phone, 
+        p_slot_date: isoDate, 
+        p_slot_hour: selectedHour
+      })
 
-    const {error} = await supabase.from("booking").insert({date: `${day}.${month! + 1}.${year}`, hour: selectedHour, ...validateData}).single()
+      if(data.success){
+        toast(data.message, {
+          icon: '👏',
+          iconTheme: {
+            primary: '#000',
+            secondary: '#fff',
+          },
+          duration: 4000,
+          position: 'top-center',})
+      }
 
-    if (error) {
-      console.error("Error creating booking:", error.message)
+
+      if (error) {
+          console.error("❌ RPC error:", error.message);
+          alert("Booking failed, please try again later.");
+          return;
+        }
+
+      if (!data?.success) {
+        
+        console.warn("⚠️ Booking failed:", data?.error);
+        alert(`Booking failed: ${data?.error}`);
+        return;
+      }
+
+      console.log(`✅ Booking successful, ${data.remaining_capacity} places left`);
+      alert(`Booking confirmed! ${data.remaining_capacity} places left for this time slot.`);
+
+      localStorage.clear();
+      setShowPopup(false);
+    } catch (err) {
+      console.error("🚨 Unexpected error:", err);
+      alert("Unexpected error while processing your booking.");
     }
-
-    console.log("Form data is:", formData);
-    localStorage.clear();
-    setShowPopup(false);
   };
 
   return (
@@ -160,11 +275,14 @@ const BookingForm = () => {
               </SelectTrigger>
               <SelectContent>
               <SelectItem value="Month"></SelectItem>
-              {months.map((m, i) => (
-                <SelectItem key={m} value={String(i)}>
+              {months.map((m, i) => {
+                const isPastMonth = year === currentYear && i < currentMonth;
+                return (
+                  <SelectItem key={m} value={String(i)} disabled={isPastMonth} className={isPastMonth ? "opacity-40 cursor-not-allowed" : ""}>
                   {m}
                 </SelectItem>
-              ))}
+                ); 
+              })}
             </SelectContent>
         </Select>
 
@@ -178,11 +296,16 @@ const BookingForm = () => {
               </SelectTrigger>
               <SelectContent>
               <SelectItem value="Day"></SelectItem>
-              {availableDays.map((d) => (
-                <SelectItem key={d} value={String(d)}>
+              {availableDays.map((d) => {
+                const isPastDay = month === currentMonth && d < currentDay;
+                console.log("Past day: ", isPastDay);
+                return (
+                  <SelectItem key={d} value={String(d)} disabled={isPastDay} className={isPastDay ? "opacity-40 cursor-not-allowed" : ""}>
                   {d}
                 </SelectItem>
-              ))}
+                )
+                
+              })}
             </SelectContent>
         </Select>
       </div>
@@ -194,7 +317,7 @@ const BookingForm = () => {
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-wrap justify-center gap-3 mb-6"
         >
-          {hours.map((hour) => (
+          {availableHour.map((hour) => (
             <button
               key={hour}
               onClick={() => setSelectedHour(hour)}
@@ -258,6 +381,7 @@ const BookingForm = () => {
                       <div className="absolute bg-amber-900/80 border-2 text-2xl text-white p-4 rounded-xl shadow-sm ">
                         <DayPicker
                           mode="single"
+                          disabled={{before: new Date()}}
                           selected={selectedDate}
                           onSelect={handleCalendarSelect}
                           classNames={{
@@ -277,7 +401,7 @@ const BookingForm = () => {
                       <SelectValue placeholder="Hours"/>
                     </SelectTrigger>
                     <SelectContent>
-                      {hours.map((h, i) => (
+                      {availableHour.map((h, i) => (
                           <SelectItem key={i} value={h}>{h}</SelectItem>
                       ))}
                     </SelectContent>
@@ -287,9 +411,25 @@ const BookingForm = () => {
                   <span>{selectedHour}</span>
                   <Pen onClick={() => setIsEditable(true)}  size={16} className="cursor-pointer text-white/75 hover:text-amber-100" />
                 </div>}
+                <div className="flex justify-between gap-4 items-center">
+                  <span>People:</span>
+                  <span className="flex-row w-full">{capacity} places left</span>
+                  <Select onValueChange={(v) => setBookedPlaces(Number(v))}>
+                    <SelectTrigger className="border-2 text-xl text-amber-50  rounded-lg focus:ring-2 focus:ring-amber-100">
+                      <SelectValue placeholder="People"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {places.map((p, i) => (
+                          <SelectItem key={i} value={String(p)}>{p}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+          
+                </div>
+                
                 <div className="flex justify-between items-center">
                   <span>Price:</span>
-                  <span>{price} €</span>
+                  <span>{totalAmount} €</span>
                 </div>
               </div>
 
@@ -297,8 +437,8 @@ const BookingForm = () => {
                 <input
                   type="text"
                   placeholder="Full Name"
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  value={formData.full_name}
+                  onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                   className="w-full border-2 p-2 rounded-lg focus:ring-2 focus:ring-amber-100"
                 />
                 <input
@@ -309,7 +449,7 @@ const BookingForm = () => {
                   className="w-full border-2 p-2 rounded-lg focus:ring-2 focus:ring-amber-100"
                 />
                 <div className="flex gap-2">
-                  <Select onValueChange={(value) => setFormData({...formData, countryCode: value})}>
+                  <Select onValueChange={(value) => setFormData({...formData, country_code: value})}>
                     <SelectTrigger className="border-2 text-2xl text-amber-50  rounded-lg focus:ring-2 focus:ring-amber-100">
                       <SelectValue placeholder="ES+34"/>
                     </SelectTrigger>
