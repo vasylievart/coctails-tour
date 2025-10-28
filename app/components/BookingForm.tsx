@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "../../lib/supabase-client";
+
 import { countryPhoneCodes } from "../utils/phone_codes";
 import { listOfMonths } from "../utils/months";
 import { bookingSchema } from "@/lib/validation";
@@ -19,12 +19,13 @@ import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import toast from "react-hot-toast";
+import { createClient } from "@/utils/supabase/client";
 
 
 
 
 //TODO: 
-//      Fix Privacy Policy and Term of Srvice
+//      Fix Header bihaviour
 //      Create FAQ component
 //      Split BookingForm into smaller components
 //      Create Dashboard
@@ -35,27 +36,30 @@ import toast from "react-hot-toast";
 
 
 const BookingForm = () => {
+  const supabase = createClient();
   const today = new Date();
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth();
   const currentDay = today.getDate();
-  console.log("current day", currentDay);
+
   const [year, setYear] = usePersistentState<number>("booking-year", currentYear);
   const [month, setMonth] = usePersistentState<number | null>("booking-month", currentMonth);
   const [day, setDay] = usePersistentState<number | null>("booking-day", currentDay);
-  console.log("Present day:", day)
+
   const [availableDays, setAvailableDays] = useState<number[]>([]);
   const [selectedHour, setSelectedHour] = usePersistentState<string>("booking-hour", "");
-  const [showPopup, setShowPopup] = useState(false);
-  const [isEditable, setIsEditable] = useState<boolean>(false)
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [tempDate, setTempDate] = useState<string>("");
+  const [availableHour, setAvailableHours] = useState<string[]>([]);
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [isEditable, setIsEditable] = useState<boolean>(false);
   const [showCalendar, setShowCalendar] = useState(false);
+
   const [capacity, setCapacity] = usePersistentState<number>("people-quantity", 0);
   const [places, setAvalablePlaces] = usePersistentState<number[]>("booking-places", [0]);
   const [bookedPlaces, setBookedPlaces] = usePersistentState<number>("booked-places", 0);
-  const [tempDate, setTempDate] = useState<string>("");
-  const [availableHour, setAvailableHours] = useState<string[]>([]);
-  console.log("Initial tempDate :", tempDate.replace(/\./g, "-").split("-").reverse().join("-"));
+
   const [formData, setFormData] = usePersistentState("booking-form", {
     full_name: "",
     email: "",
@@ -63,19 +67,23 @@ const BookingForm = () => {
     phone: "",
     comment: "",
   });
+
   const isoDate = tempDate
   .replace(/\./g, "-")
   .split("-")
   .reverse()
   .join("-")
   .trim();
- 
 
+  const isoAndCode = countryPhoneCodes;
+  const months = listOfMonths;
+  const price = 150;
+  const totalAmount = price * bookedPlaces;
+ 
   useEffect(() => {
     if (day && month !== null && year) {
       const date = `${day}.${month + 1}.${year}`;
       setTempDate(date);
-      console.log("Initial date :", date );
     }
   }, [day, month, year]);
  
@@ -89,9 +97,6 @@ const BookingForm = () => {
           .eq("slot_date", isoDate)
           .gt("capacity_left", 0)
           .eq("disabled", false);
-          console.log("Is it format", JSON.stringify(isoDate));
-
-          console.log("Type of formattedDate :", typeof(isoDate));
         
         if (error) {
           console.error("Error fetching hours:", error.message);
@@ -99,9 +104,7 @@ const BookingForm = () => {
         }
         
         if (data) {
-          console.log("Is there",data);
           const hours = data.map(item => item.slot_hour);
-          console.log(hours);
           setAvailableHours(hours);
         }
       };
@@ -109,30 +112,28 @@ const BookingForm = () => {
     getHours();
   }, [tempDate]);
 
-  
   useEffect(() => {
-  if (!isoDate || !selectedHour) return;
+    if (!isoDate || !selectedHour) return;
 
-  const getCapacity = async () => {
-    const { data, error } = await supabase
-      .from("slots")
-      .select("capacity_left")
-      .eq("slot_date", isoDate)
-      .eq("slot_hour", selectedHour)
-      .single();
+    const getCapacity = async () => {
+      const { data, error } = await supabase
+        .from("slots")
+        .select("capacity_left")
+        .eq("slot_date", isoDate)
+        .eq("slot_hour", selectedHour)
+        .single();
 
-    if (!error && data) setCapacity(data.capacity_left);
-  };
+      if (!error && data) setCapacity(data.capacity_left);
+    };
 
-  getCapacity();
-}, [tempDate, selectedHour]);
+    getCapacity();
+  }, [tempDate, selectedHour]);
 
 
   useMemo(() => {
     const createPlaces = () => {
     const pl = [];
     for ( let i = 1; i<capacity+1; i++ ) {
-      
       pl.push(i);
     }
     setAvalablePlaces(pl)
@@ -140,14 +141,6 @@ const BookingForm = () => {
   }
   createPlaces();
   },[capacity])
-
-  console.log("People:", bookedPlaces);
- 
-
-  const isoAndCode = countryPhoneCodes;
-  const months = listOfMonths;
-  const price = 150;
-  const totalAmount = price * bookedPlaces;
 
   useEffect(() => {
     if (month !== null) {
@@ -225,7 +218,6 @@ const BookingForm = () => {
           position: 'top-center',})
       }
 
-
       if (error) {
           console.error("❌ RPC error:", error.message);
           alert("Booking failed, please try again later.");
@@ -251,7 +243,7 @@ const BookingForm = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-10">
+    <div className="w-full flex flex-col items-center py-10 z-50" >
       <h2 className="text-3xl text-white font-semibold mb-6">Book Your Cocktail Tour</h2>
 
       <div className="flex gap-4 flex-wrap justify-center mb-6">
@@ -298,7 +290,6 @@ const BookingForm = () => {
               <SelectItem value="Day"></SelectItem>
               {availableDays.map((d) => {
                 const isPastDay = month === currentMonth && d < currentDay;
-                console.log("Past day: ", isPastDay);
                 return (
                   <SelectItem key={d} value={String(d)} disabled={isPastDay} className={isPastDay ? "opacity-40 cursor-not-allowed" : ""}>
                   {d}

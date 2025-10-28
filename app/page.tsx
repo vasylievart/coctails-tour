@@ -3,6 +3,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BookingForm from "./components/BookingForm";
 import {Toaster} from "react-hot-toast";
+import FAQSection from "./components/FAQSection";
+import NearestDate from "./components/NearestDate";
+//import UpcomingSlotBanner from "./components/UpcomingSlotBanner";
 
 export default function Home() {
   return (
@@ -11,6 +14,7 @@ export default function Home() {
         bg-[url('/images/bg-image.webp')] bg-center bg-cover bg-repeat "
     >
       <Header/>
+      <NearestDate/>
       <Toaster 
         position="top-center"
         reverseOrder={false}
@@ -18,6 +22,7 @@ export default function Home() {
       />
       <Main/>
       <BookingForm/>
+      <FAQSection/>
       <Footer/>
     </div>
   );

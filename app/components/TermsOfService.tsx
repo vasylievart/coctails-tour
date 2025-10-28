@@ -20,7 +20,7 @@ export default function TermsOfService() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-800 px-6 py-12 md:px-12 lg:px-24">
+    <main className="min-h-screen bg-[url('/images/privacy-policy_bg.webp')] text-gray-800 px-6 py-12 md:px-12 lg:px-24">
       <article className="max-w-4xl mx-auto">
         <header className="mb-10 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
@@ -29,8 +29,7 @@ export default function TermsOfService() {
           <p className="text-gray-500">Last updated: October 2025</p>
         </header>
 
-        {/* Navigation */}
-        <nav className="bg-white border border-gray-200 rounded-2xl shadow-sm p-4 mb-10 flex flex-wrap gap-3 justify-center text-sm md:text-base">
+        <nav className="bg-orange-100  border-2 border-black rounded-2xl shadow-sm p-4 mb-10 flex flex-wrap gap-3 justify-center text-sm md:text-base">
           {[
             "about",
             "age",
@@ -46,15 +45,15 @@ export default function TermsOfService() {
             <a
               key={id}
               href={`#${id}`}
-              className="text-blue-600 hover:text-blue-800 transition"
+              className="text-grey-600 hover:text-grey-800 hover:underline transition"
             >
               {id.charAt(0).toUpperCase() + id.slice(1)}
             </a>
           ))}
         </nav>
 
-        {/* Sections */}
-        <section id="about" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+                <img className="absolute z-10 top-[2%] left-[28%] w-[96px]" src="/images/escudo_barcelona.png" alt="Coat of Arms Barcelona" />
+        <section id="about" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">1. About Us</h2>
           <p>
             <strong>Company:</strong> Cocktail Tours Barcelona <br />
@@ -67,8 +66,10 @@ export default function TermsOfService() {
             experiences.
           </p>
         </section>
+        <img className="absolute w-[480px] top-[8%] right-[4%] z-10 rotate-12" src="./images/coctails_header.webp" alt="logo" />
 
-        <section id="age" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+
+        <section id="age" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">2. Age Restriction</h2>
           <p>
             Participation is <strong>strictly limited to individuals aged 18 or
@@ -79,9 +80,10 @@ export default function TermsOfService() {
             Participants under 18 will not be admitted and no refund will be
             issued.
           </p>
-        </section>
+        </section> 
+        <img className="absolute top-[92%] left-[18%] z-10" src="/images/over_18_years.webp" alt="Age restriction" />
 
-        <section id="booking" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        <section id="booking" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">3. Booking and Payment</h2>
           <ul className="list-disc pl-5 space-y-1">
             <li>Bookings can be made through our website or official partners.</li>
@@ -93,7 +95,7 @@ export default function TermsOfService() {
           </p>
         </section>
 
-        <section id="cancellations" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        <section id="cancellations" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">
             4. Cancellations and Refund Policy
           </h2>
@@ -111,8 +113,9 @@ export default function TermsOfService() {
             option to reschedule.
           </p>
         </section>
-
-        <section id="behavior" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        
+        
+        <section id="behavior" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm z-10">
           <h2 className="text-xl font-semibold mb-2">
             5. Tour Experience and Behavior
           </h2>
@@ -127,8 +130,9 @@ export default function TermsOfService() {
             these rules.
           </p>
         </section>
+        <img className="absolute left-[2%] top-[150%] w-[240px] -rotate-12" src="/images/pan_con_tomate.webp" alt="Brread with tomatoes" />
 
-        <section id="safety" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        <section id="safety" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">6. Health and Safety</h2>
           <ul className="list-disc pl-5 space-y-1">
             <li>Alcohol consumption involves health risks.</li>
@@ -140,7 +144,7 @@ export default function TermsOfService() {
           </p>
         </section>
 
-        <section id="liability" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        <section id="liability" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">7. Liability Disclaimer</h2>
           <p>We are not responsible for:</p>
           <ul className="list-disc pl-5 space-y-1">
@@ -152,8 +156,9 @@ export default function TermsOfService() {
             We recommend having travel insurance covering these risks.
           </p>
         </section>
+        <img className="absolute w-[280px] right-[12%] top-[240%] rotate-6 z-10" src="/images/coctail_5.png" alt="Coctail" />
 
-        <section id="media" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        <section id="media" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">8. Photography and Media</h2>
           <p>
             Photos and videos may be taken during tours for promotional purposes.
@@ -161,7 +166,7 @@ export default function TermsOfService() {
           </p>
         </section>
 
-        <section id="privacy" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        <section id="privacy" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">9. Data Protection and Privacy</h2>
           <p>
             Your data (name, email, phone number) is collected only for booking
@@ -179,7 +184,7 @@ export default function TermsOfService() {
           </p>
         </section>
 
-        <section id="law" className="mb-10 bg-white rounded-2xl p-6 shadow-sm">
+        <section id="law" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">
             10. Governing Law and Jurisdiction
           </h2>
@@ -189,7 +194,7 @@ export default function TermsOfService() {
           </p>
         </section>
 
-        <footer className="text-center text-sm text-gray-500 mt-10">
+        <footer className="text-center text-sm text-gray-800 mt-10">
           <p>© 2025 Cocktail Tours Barcelona. All rights reserved.</p>
           <p>
             <Link href="/privacy-policy" className="underline">
