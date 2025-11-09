@@ -1,21 +1,46 @@
-"use server"
+"use server";
 
-import { createClient } from "@/utils/supabase/client";
-import { revalidatePath } from "next/cache";
 
-export async function deleteUser(id: string) {
+import { supabaseAdmin } from "@/utils/supabase/admin";
+import { createClient } from "@/utils/supabase/server";
+import type { User } from "@supabase/auth-js";
+
+export async function getAuthUser() {
   const supabase = createClient();
-  const { error } = await supabase.from('users').delete().eq('id', id); // Or auth.admin.deleteUser if auth users
-  if (error) console.error(error);
-  revalidatePath('/dashboard/users');
+
+  const {
+    data: { user },
+    error,
+  } = await (await supabase).auth.getUser();
+
+  if (error) {
+    console.error("Error fetching auth user:", error.message);
+    return null;
+  }
+  return user;
 }
 
+export async function getAdminUsers(): Promise<User[]> {
+  const { data, error } = await supabaseAdmin.auth.admin.listUsers();
+  if (error) throw error;
+  return data.users;
+}
 
-export async function getCountryStats() {
-  const supabase = createClient();
-  const { data: users } = await supabase.from('users').select('country_code');
-  return users?.reduce((acc: { [key: string]: number }, u) => {
-    acc[u.country_code || 'Unknown'] = (acc[u.country_code|| 'Unknown'] || 0) + 1;
-    return acc;
-  }, {}) || {};
+export async function deleteAdminUser(id: string): Promise<void> {
+  const { error } = await supabaseAdmin.auth.admin.deleteUser(id);
+  if (error) throw error;
+}
+
+export async function createAdminUser(formData: FormData) {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  const { data, error } = await supabaseAdmin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+  });
+
+  if (error) throw error;
+  return data.user;
 }

@@ -17,7 +17,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="max-w-3xl mx-auto py-16 px-4">
+    <section className="max-w-3xl mx-auto py-16 px-4 z-50">
       <h2 className="flex justify-center items-center gap-4 text-3xl font-bold text-center text-shadow-lg mb-10 text-white">
         Frequently Asked Questions
         <Image src='/images/faq/faq_web.webp' alt="Frequently Asked Questions" width={128} height={128}/>

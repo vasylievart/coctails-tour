@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/client";
+import BookingPopupContainer from "./booking_form/BookingPopupContainer";
 
 
 type SlotRow = {
@@ -27,6 +28,7 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
   const [closest, setClosest] = useState<SlotRow | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPopup, setShowPopup] = useState<boolean>(false)
 
 
   const fetchSlots = useCallback(async () => {
@@ -36,7 +38,7 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
         const { data, error } = await supabase
           .from("slots")
           .select("id, slot_date, slot_hour, capacity_left, capacity_total")
-          .gte("slot_date", new Date().toISOString().slice(0, 10)) // fetch today and future
+          .gte("slot_date", new Date().toISOString().slice(0, 10)) 
           .order("slot_date", { ascending: true })
           .order("slot_hour", { ascending: true });
   
@@ -78,6 +80,7 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
     withTs.sort((a, b) => a.ts - b.ts);
     setClosest(withTs[0].slot);
   }, [slots]);
+  console.log("Closest:", closest)
   
 
   useEffect(() => {
@@ -137,6 +140,7 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
   const handleQuickBook = () => {
     if (!closest) return;
     onQuickBook?.(closest);
+    setShowPopup(true);
   };
   
   const handleMouseEnter = () => {
@@ -152,9 +156,21 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
       console.log("🟢 Animation resumed");
     }
   };
-
+ 
   return (
-     <div
+    <>
+      {showPopup && (
+        <div>
+          <BookingPopupContainer 
+            isOpen={showPopup} 
+            specifiedDate={closest?.slot_date} 
+            mode={"create"} 
+            selectedHour={closest?.slot_hour}
+            onClose={() => setShowPopup(false)}
+          />
+        </div>
+      )}
+      <div
         className="fixed bottom-0 left-1/2 -translate-x-1/2 pointer-events-auto z-10"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -206,6 +222,8 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
           </div>
         </div>
       </div>
+    </>
+     
   );
 };
 

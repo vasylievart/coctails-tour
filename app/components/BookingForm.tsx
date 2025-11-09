@@ -25,8 +25,6 @@ import { createClient } from "@/utils/supabase/client";
 
 
 //TODO: 
-//      Fix Header bihaviour
-//      Create FAQ component
 //      Split BookingForm into smaller components
 //      Create Dashboard
 //      Auth
@@ -37,29 +35,30 @@ import { createClient } from "@/utils/supabase/client";
 
 const BookingForm = () => {
   const supabase = createClient();
+  // set all current date variables with current values: day, month, year
   const today = new Date();
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth();
   const currentDay = today.getDate();
-
+  // states forset new year, month and day
   const [year, setYear] = usePersistentState<number>("booking-year", currentYear);
   const [month, setMonth] = usePersistentState<number | null>("booking-month", currentMonth);
   const [day, setDay] = usePersistentState<number | null>("booking-day", currentDay);
-
+  //states for futher functions
   const [availableDays, setAvailableDays] = useState<number[]>([]);
   const [selectedHour, setSelectedHour] = usePersistentState<string>("booking-hour", "");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [tempDate, setTempDate] = useState<string>("");
   const [availableHour, setAvailableHours] = useState<string[]>([]);
-
+  // states for open(close popup, for set editable and open calendar)
   const [showPopup, setShowPopup] = useState(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [showCalendar, setShowCalendar] = useState(false);
-
+  // state for dynamic values that we received from supabase db
   const [capacity, setCapacity] = usePersistentState<number>("people-quantity", 0);
   const [places, setAvalablePlaces] = usePersistentState<number[]>("booking-places", [0]);
   const [bookedPlaces, setBookedPlaces] = usePersistentState<number>("booked-places", 0);
-
+  //form data states
   const [formData, setFormData] = usePersistentState("booking-form", {
     full_name: "",
     email: "",
@@ -68,25 +67,45 @@ const BookingForm = () => {
     comment: "",
   });
 
-  const isoDate = tempDate
-  .replace(/\./g, "-")
-  .split("-")
-  .reverse()
-  .join("-")
-  .trim();
+
+
 
   const isoAndCode = countryPhoneCodes;
   const months = listOfMonths;
   const price = 150;
   const totalAmount = price * bookedPlaces;
- 
+ //depend of current year, month and day => mapping all available days in month
+  useEffect(() => {
+    if (month !== null) {
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+      setAvailableDays(daysArray);
+    } else {
+      setAvailableDays([]);
+    }
+  }, [year, month]);
+  
+  //set current day
+   useMemo(() => {
+    setDay(currentDay)
+  },[currentDay]);
+
+  //set first main tempDate
   useEffect(() => {
     if (day && month !== null && year) {
       const date = `${day}.${month + 1}.${year}`;
       setTempDate(date);
     }
   }, [day, month, year]);
- 
+
+  //formate date
+  const isoDate = tempDate
+  .replace(/\./g, "-")
+  .split("-")
+  .reverse()
+  .join("-")
+  .trim();
+ // when we received tempDate => fetching slot_hour from slots
   useEffect(() => {
       const getHours = async () => {
         if (!isoDate) return;
@@ -111,7 +130,7 @@ const BookingForm = () => {
 
     getHours();
   }, [tempDate]);
-
+  //fetch capacity_left from supabase db depend of cuurent slot_hour, and slot_date
   useEffect(() => {
     if (!isoDate || !selectedHour) return;
 
@@ -129,7 +148,7 @@ const BookingForm = () => {
     getCapacity();
   }, [tempDate, selectedHour]);
 
-
+  // covert capacity_left number into array for selecct component
   useMemo(() => {
     const createPlaces = () => {
     const pl = [];
@@ -141,31 +160,18 @@ const BookingForm = () => {
   }
   createPlaces();
   },[capacity])
-
-  useEffect(() => {
-    if (month !== null) {
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-      setAvailableDays(daysArray);
-    } else {
-      setAvailableDays([]);
-    }
-  }, [year, month]);
-
-  useMemo(() => {
-    setDay(currentDay)
-  },[currentDay]);
-
+  
+ //when we got current day (slot_date), set cuurent hour (slot_hour) => setShowPopup(true)
   const handleBook = () => {
     if (!day || !selectedHour) return;
     setShowPopup(true);
   };
-
+ //local function for change booking_hour if we need
   function handleHourChange(newHour: string) {
   setSelectedHour(newHour);
   setIsEditable(false);
   }
- 
+  //set new date from DayPicker calendar
   const handleCalendarSelect = (newDate: Date | undefined) => {
   if (!newDate) return;
 
@@ -183,6 +189,7 @@ const BookingForm = () => {
   setIsEditable(false);
   };
   
+  //function for validate data and create new booking
   const handleConfirm = async (e: any) => {
     e.preventDefault();
 
@@ -245,7 +252,9 @@ const BookingForm = () => {
   return (
     <div className="w-full flex flex-col items-center py-10 z-50" >
       <h2 className="text-3xl text-white font-semibold mb-6">Book Your Cocktail Tour</h2>
+      {/*First component we have to set a spacified Date*/}
 
+      {/*First step - set year*/}
       <div className="flex gap-4 flex-wrap justify-center mb-6">
         <Select value={String(year)} onValueChange={(value) => setYear(Number(value))}>
           <SelectTrigger className="border-2 text-2xl text-white p-4 rounded-xl shadow-sm focus:ring-2 focus:ring-amber-400 hover:text-amber-700 hover:border-amber-400">
@@ -257,7 +266,7 @@ const BookingForm = () => {
           ))}
           </SelectContent>
         </Select>
-       
+       {/*Second step - set month*/}
         <Select
           value={month !== null ? String(month) : ""}
           onValueChange={(value) => setMonth(value === "" ? null : Number(value))}
@@ -277,7 +286,7 @@ const BookingForm = () => {
               })}
             </SelectContent>
         </Select>
-
+        {/*Third step. Depend of current month it returns us days in month and set day*/}
         <Select
           value={day !== null ? String(day) : ""}
           onValueChange={(value) => setDay(value === "" ? null : Number(value))}
@@ -301,6 +310,8 @@ const BookingForm = () => {
         </Select>
       </div>
 
+      {/*We've set Date in format yyyy-MM-dd in supabase db will be booking_date equal slot_date, and supabase db return from slots => slots_hour depend of current day*/}
+      {/*Forth step - set hour (slot_hour) => return available slot_hour in current dat (booking_date/slot_date)*/}
       {/* Hours */}
       {day && (
         <motion.div
@@ -323,6 +334,7 @@ const BookingForm = () => {
           ))}
         </motion.div>
       )}
+      {/*Fifth step - when hour selected (slot_hour/booking_hour) we can handle booking. Then showPopup will be set as true and BookingPopup will be opened*/}
 
       {selectedHour && (
         <motion.button
@@ -333,6 +345,8 @@ const BookingForm = () => {
           Book Now
         </motion.button>
       )}
+
+      {/*Steps: tempDate => setSelectedHour => handleBook => setShowPopup as true */}
 
       <AnimatePresence>
         {showPopup && (
@@ -358,16 +372,18 @@ const BookingForm = () => {
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Calendar size={20} /> Booking Summary
               </h3>
-
+              {/*BookingPopup: first line is Date, we received tempDate as a value.*/}
               <div className="space-y-2 mb-4"> 
                   <div className="relative flex justify-between items-center">
                     <span>Date:</span>
                     <span>{tempDate}</span>
+                    {/*Here we can change tempDate => open calendar setShowCalendar as true*/}
                     <CalendarIcon
                       size={16}
                       className="cursor-pointer text-white/75 hover:text-amber-100"
                       onClick={() => setShowCalendar(!showCalendar)}
                     />
+                    {/*When showCalendar is true => open DayPicher => setSelectedDate(newDate)*/}
                     { showCalendar && (
                       <div className="absolute bg-amber-900/80 border-2 text-2xl text-white p-4 rounded-xl shadow-sm ">
                         <DayPicker
@@ -385,7 +401,8 @@ const BookingForm = () => {
                      )
                     }
                   </div>
-                
+
+                {/*BookingPopup: Second step => if we need we can change, as a props we received slot_hour from previous step*/}
                 { isEditable ?
                   <Select onValueChange={handleHourChange}>
                     <SelectTrigger className="border-2 text-xl text-amber-50  rounded-lg focus:ring-2 focus:ring-amber-100">
@@ -402,6 +419,7 @@ const BookingForm = () => {
                   <span>{selectedHour}</span>
                   <Pen onClick={() => setIsEditable(true)}  size={16} className="cursor-pointer text-white/75 hover:text-amber-100" />
                 </div>}
+                {/*BookingPopup: Thirs step: set people_count*/}
                 <div className="flex justify-between gap-4 items-center">
                   <span>People:</span>
                   <span className="flex-row w-full">{capacity} places left</span>
@@ -410,6 +428,7 @@ const BookingForm = () => {
                       <SelectValue placeholder="People"/>
                     </SelectTrigger>
                     <SelectContent>
+                      {/*We received from supabase db capacity_left for current slot_hour*/}
                       {places.map((p, i) => (
                           <SelectItem key={i} value={String(p)}>{p}</SelectItem>
                       ))}
@@ -423,7 +442,7 @@ const BookingForm = () => {
                   <span>{totalAmount} €</span>
                 </div>
               </div>
-
+              {/*BookingPopup: Fouth step - set formData : full_name, email, phone, country_code, comment*/}
               <div className="space-y-3 mb-4">
                 <input
                   type="text"
@@ -466,7 +485,7 @@ const BookingForm = () => {
                   className="w-full border-2 p-2 rounded-lg focus:ring-2 focus:ring-amber-100"
                 />
               </div>
-
+              {/*Bookingpopup: handleConfirm => booking data will be set to supabase db : booking_date, booking_hour, people_count, full_name, email etc.*/}
               <button
                 onClick={(e) => handleConfirm(e)}
                 className="px-6 py-3 border-2 text-2xl text-white p-4 rounded-xl  focus:ring-2 focus:ring-amber-100 hover:text-amber-100 hover:bg-amber-800 hover:border-amber-100 shadow-md transition"

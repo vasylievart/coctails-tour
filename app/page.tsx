@@ -5,7 +5,11 @@ import BookingForm from "./components/BookingForm";
 import {Toaster} from "react-hot-toast";
 import FAQSection from "./components/FAQSection";
 import NearestDate from "./components/NearestDate";
-//import UpcomingSlotBanner from "./components/UpcomingSlotBanner";
+import ChangeBooking from "./components/ChangeBooking";
+import BookingContainer from "./components/booking_form/BookingContainer";
+
+
+
 
 export default function Home() {
   return (
@@ -21,8 +25,9 @@ export default function Home() {
         gutter={8}
       />
       <Main/>
-      <BookingForm/>
+      <BookingContainer/>
       <FAQSection/>
+      <ChangeBooking/>
       <Footer/>
     </div>
   );
