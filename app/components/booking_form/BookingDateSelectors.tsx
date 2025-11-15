@@ -12,8 +12,6 @@ import { useBookingData } from "./hooks/useBookingData";
 import { useBookingState } from "./hooks/useBookingState";
 import BookingHourSelector from "./BookingHourSelector";
 
-
-
 const BookingDateSelectors = () => {
   //Get all states and static data from custom hook
   const {currentDay, currentMonth, currentYear, year, setYear, month, setMonth, day, setDay, months} = useBookingState();
@@ -50,11 +48,14 @@ const BookingDateSelectors = () => {
 
   return (
     <>
-      <div className="flex-col gap-4 flex-wrap justify-center mb-6">
+      <div className="flex flex-col gap-6 items-center w-full px-2 sm:px-4 mb-6 z-50">
         {/*Select specified year*/}
-        <div className="flex gap-4 justify-center mb-4">
-          <Select value={String(year)} onValueChange={(value) => setYear(Number(value))}>
-            <SelectTrigger className="border-2 text-2xl text-white p-4 rounded-xl shadow-sm focus:ring-2 focus:ring-amber-400 hover:text-amber-700 hover:border-amber-400">
+        <div className="flex flex-wrap w-full gap-3 sm:gap-4 justify-center max-w-lg">
+          <Select 
+            value={String(year)} 
+            onValueChange={(value) => setYear(Number(value))}
+          >
+            <SelectTrigger className="border-2 text-base sm:text-xl md:text-2xl text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl shadow-sm focus:ring-2 focus:ring-amber-400 hover:text-amber-700 hover:border-amber-400 w-[30%] min-w-[90px]">
               <SelectValue placeholder="Years" />
             </SelectTrigger>
             <SelectContent>
@@ -68,7 +69,7 @@ const BookingDateSelectors = () => {
             value={month !== null ? String(month) : ""}
             onValueChange={(value) => setMonth(value === "" ? null : Number(value))}
           >
-            <SelectTrigger className="border-2 text-2xl text-white p-4 rounded-xl shadow-sm focus:ring-2 focus:ring-amber-400 hover:text-amber-700 hover:border-amber-400">
+            <SelectTrigger className="border-2 text-base sm:text-xl md:text-2xl text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl shadow-sm focus:ring-2 focus:ring-amber-400 hover:text-amber-200 hover:border-amber-400 w-[35%] min-w-[110px]">
               <SelectValue placeholder="Month" />
                 </SelectTrigger>
                 <SelectContent>
@@ -89,7 +90,7 @@ const BookingDateSelectors = () => {
             onValueChange={(value) => setDay(value === "" ? null : Number(value))}
             disabled = {!month}
           >
-            <SelectTrigger className="border-2 text-2xl text-white p-4 rounded-xl shadow-sm focus:ring-2 focus:ring-amber-400 hover:text-amber-700 hover:border-amber-400">
+            <SelectTrigger className="border-2 text-base sm:text-xl md:text-2xl text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl shadow-sm focus:ring-2 focus:ring-amber-400 hover:text-amber-200 hover:border-amber-400 w-[25%] min-w-[80px]">
               <SelectValue placeholder="Day" />
                 </SelectTrigger>
                 <SelectContent>

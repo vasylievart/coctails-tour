@@ -42,49 +42,77 @@ const handleClosePopup = () => {
 
   if (booking) {
     return (
-      <BookingPopupContainer isOpen={true} specifiedDate={""} bookingData={booking} capacity_left={capacity} onClose={handleClosePopup} mode={"edit"}/>    
+      <BookingPopupContainer isOpen={true} specifiedDate={""} bookingData={booking} capacity_left={capacity} onClose={handleClosePopup} mode={"edit"}/>  
     );
   } 
 
   return (
-    <div className=" p-6 bg-amber-700/60 border-white shadow-xl w-[90%] max-w-md relativemax-w-md mx-auto mt-10 space-y-4 border-2 text-xl text-amber-50  rounded-lg focus:ring-2 focus:ring-amber-100 z-50">
-      <h2 className="text-2xl font-semibold text-center">Find Your Booking</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div 
+      className="
+        w-[92%] sm:w-[85%] md:w-[70%] lg:max-w-md
+        mx-auto mt-8 sm:mt-10
+        p-4 sm:p-6 md:p-8
+        bg-amber-700/60 border-2 border-white rounded-xl shadow-xl
+        text-base sm:text-lg md:text-xl text-amber-50
+        focus:ring-2 focus:ring-amber-100
+        space-y-5 sm:space-y-6
+        z-50
+      "
+      >
+      <h2
+        className="text-xl sm:text-2xl md:text-3xl font-semibold text-center"
+      >Find Your Booking</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium">
+          <label htmlFor="email" className="block text-sm sm:text-base font-medium mb-1">
             Email
           </label>
           <input
             id="email"
             type="email"
             required
-            className="w-full border p-2 rounded-md"
+            className="
+              w-full border border-amber-100/50 p-2 sm:p-3 rounded-md
+              bg-amber-950/10 text-amber-50 placeholder-amber-200
+              focus:outline-none focus:ring-2 focus:ring-amber-200
+            "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium">
+          <label htmlFor="phone" className="block text-sm sm:text-base font-medium mb-1">
             Phone (without country code)
           </label>
           <input
             id="phone"
             type="tel"
             required
-            className="w-full border p-2 rounded-md"
+            className="
+              w-full border border-amber-100/50 p-2 sm:p-3 rounded-md
+              bg-amber-950/10 text-amber-50 placeholder-amber-200
+              focus:outline-none focus:ring-2 focus:ring-amber-200
+            "
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
 
-        <Button className="bg-amber-700/60 px-6 py-6 border-2 text-2xl text-white rounded-xl  focus:ring-2 focus:ring-amber-100 hover:text-amber-100 hover:bg-amber-800 hover:border-amber-100 shadow-md transition" type="submit" disabled={isPending}>
+        <Button 
+          className="
+            w-full mt-3 py-3 sm:py-4 text-lg sm:text-xl font-semibold
+            bg-amber-700/70 border-2 border-amber-100 text-white rounded-xl
+            hover:bg-amber-800 hover:border-amber-100 hover:text-amber-100
+            focus:ring-2 focus:ring-amber-100 shadow-md transition-all
+          "
+          type="submit" disabled={isPending}>
           {isPending ? "Searching..." : "Find Booking"}
         </Button>
       </form>
 
       {notFound && (
-        <p className="text-center text-red-500">No booking found with that email and phone number.</p>
+        <p className="text-center text-red-400 text-sm sm:text-base mt-3">No booking found with that email and phone number.</p>
       )}
     </div>
   );

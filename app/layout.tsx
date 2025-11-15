@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+/*import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -32,3 +32,33 @@ export default function RootLayout({
     </html>
   );
 }
+*/
+// app/layout.tsx
+import "./globals.css";
+import { Toaster } from "react-hot-toast";
+import type { Metadata } from "next";
+
+// ✅ Always keep RootLayout as a Server Component
+export const metadata: Metadata = {
+  title: "Coctails tour Barcelona",
+  description: "Enjoy a smooth booking experience",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        {/* Toast notifications (safe client-side only) */}
+        <Toaster position="top-center" reverseOrder={false} />
+
+        {/* Page content */}
+        {children}
+      </body>
+    </html>
+  );
+}
+

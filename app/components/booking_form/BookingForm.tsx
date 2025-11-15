@@ -27,7 +27,6 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
   const {formData, setFormData, isoAndCode} = useBookingState();
   const [showPopup, setShowPopup] = useState<boolean | undefined>(open);
   const [privateTour, setPrivateTour] = useState<boolean>(false);
-  const [canceled, setCanceled] = useState<boolean>(false);
 
   useEffect(() => {
     if (bookingData) {
@@ -38,6 +37,7 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
         country_code: bookingData.country_code,
         comment: bookingData.comment || "",
       });
+      setPrivateTour(bookingData.private_tour);
     }
   }, [bookingData, setFormData]);
 
@@ -85,6 +85,7 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
           p_booking_date: formattedDate,
           p_booking_hour: selectedHour || bookingData.booking_hour,
           p_comment: validatedData.comment,
+          p_private_tour: privateTour
         });
 
         toast.success("Booking updated successfully!");
@@ -129,70 +130,131 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
       toast.error("Something went wrong. Please try again.");
     }
   };
-  return (
-    <>
-     <div className="space-y-3 mb-4">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  value={formData.full_name}
-                  onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                  className="w-full border-2 p-2 rounded-lg focus:ring-2 focus:ring-amber-100"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full border-2 p-2 rounded-lg focus:ring-2 focus:ring-amber-100"
-                />
-                <div className="flex gap-2">
-                  <Select onValueChange={(value) => setFormData({...formData, country_code: value})}>
-                    <SelectTrigger className="border-2 text-2xl text-amber-50  rounded-lg focus:ring-2 focus:ring-amber-100">
-                      <SelectValue placeholder="ES+34"/>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {isoAndCode.map((c, i) => (
-                          <SelectItem key={i} value={c.code}>{c.iso}{c.code}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <input
-                    type="tel"
-                    placeholder="Phone"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full border-2 p-2 rounded-lg focus:ring-2 focus:ring-amber-100"
-                  />
-                </div>
-                
-                <textarea
-                  placeholder="Comment (optional)"
-                  value={formData.comment}
-                  onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-                  className="w-full border-2 p-2 rounded-lg focus:ring-2 focus:ring-amber-100"
-                />
-              </div>
-              {/*Bookingpopup: handleConfirm => booking data will be set to supabase db : booking_date, booking_hour, people_count, full_name, email etc.*/}
-              <div className="flex justify-between gap-4">
-                <button
-                onClick={(e) => handleConfirm(e)}
-                className="px-6 py-3 border-2 text-lg text-white rounded-xl  focus:ring-2 focus:ring-amber-100 hover:text-amber-100 hover:bg-amber-800 hover:border-amber-100 shadow-md transition"
-              >
-                {mode === "edit" ? "Update Booking" : "Confirm Booking"}
-              </button>
-              {mode === "edit" && (
-                <button onClick={(e) => handleCancel(e)} className="px-6 py-3 border-2 text-lg text-red-300 border-red-300 rounded-xl  focus:ring-2 focus:ring-red-400 hover:text-amber-100 hover:bg-amber-800 hover:border-amber-100 shadow-md transition">Cancel booking</button>
-              )}
-              </div>
-              <div className="flex justify-end gap-4 mt-4">
-                <Label htmlFor="private">Private</Label>
-                <Checkbox checked={privateTour} onCheckedChange={(checked) => setPrivateTour(Boolean(checked))} id="private"/>
-              </div>
-              
-              
-    </>
-  )
+  
+      return (
+      <>
+        <div className="space-y-3 mb-6 w-full max-w-md mx-auto px-0 sm:px-0">
+          {/* Full Name */}
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={formData.full_name}
+            onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+            className="
+              w-full border border-white/30 bg-white/10 text-white 
+              placeholder-white/60 p-2 rounded-lg 
+              focus:ring-2 focus:ring-amber-200 focus:outline-none 
+              transition text-base sm:text-lg
+            "
+          />
+
+          {/* Email */}
+          <input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="
+              w-full border border-white/30 bg-white/10 text-white 
+              placeholder-white/60 p-2 rounded-lg 
+              focus:ring-2 focus:ring-amber-200 focus:outline-none 
+              transition text-base sm:text-lg
+            "
+          />
+
+          {/* Phone Selector + Input */}
+          <div className="flex flex-row sm:flex-row gap-2">
+            <Select
+              onValueChange={(value) => setFormData({ ...formData, country_code: value })}
+            >
+              <SelectTrigger className="
+                sm:w-32 border border-white/30 bg-white/10 text-amber-50 
+                text-base sm:text-lg rounded-lg focus:ring-2 focus:ring-amber-200
+              ">
+                <SelectValue placeholder="ES +34" />
+              </SelectTrigger>
+              <SelectContent className="bg-amber-900/95 border border-white/20 rounded-xl text-white max-h-60 overflow-y-auto">
+                {isoAndCode.map((c, i) => (
+                  <SelectItem key={i} value={c.code}>
+                    {c.iso} {c.code}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <input
+              type="tel"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="
+                w-full border border-white/30 bg-white/10 text-white 
+                placeholder-white/60 p-2  rounded-lg 
+                focus:ring-2 focus:ring-amber-200 focus:outline-none 
+                transition text-base sm:text-lg
+              "
+            />
+          </div>
+
+          {/* Comment */}
+          <textarea
+            placeholder="Comment (optional)"
+            value={formData.comment}
+            onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+            rows={3}
+            className="
+              w-full border border-white/30 bg-white/10 text-white 
+              placeholder-white/60 p-3 rounded-lg 
+              focus:ring-2 focus:ring-amber-200 focus:outline-none 
+              transition text-base sm:text-lg resize-none
+            "
+          />
+        </div>
+
+        {/* Buttons */}
+        <div className="flex flex-row sm:flex-row justify-between gap-3 w-full max-w-md mx-auto px-2 sm:px-0">
+          <button
+            onClick={(e) => handleConfirm(e)}
+            className="
+              sm:w-auto px-6 py-3 border-2 text-white text-base sm:text-lg 
+              rounded-xl focus:ring-2 focus:ring-amber-200 
+              hover:text-amber-100 hover:bg-amber-800 hover:border-amber-100 
+              transition font-semibold shadow-md
+            "
+          >
+            {mode === "edit" ? "Update" : "Confirm Booking"}
+          </button>
+
+          {mode === "edit" && (
+            <button
+              onClick={(e) => handleCancel(e)}
+              className="
+                sm:w-auto px-6 py-3 border-2 text-red-300 border-red-300 
+                text-base sm:text-lg rounded-xl 
+                focus:ring-2 focus:ring-red-400 hover:text-amber-100 
+                hover:bg-amber-800 hover:border-amber-100 
+                transition font-semibold shadow-md
+              "
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+
+        {/* Private Tour */}
+        <div className="flex items-center justify-end gap-3 mt-5 w-full max-w-md mx-auto px-2 sm:px-0">
+          <Label htmlFor="private" className="text-white/80 text-sm sm:text-base">
+            Private
+          </Label>
+          <Checkbox
+            checked={privateTour}
+            onCheckedChange={(checked) => setPrivateTour(Boolean(checked))}
+            id="private"
+          />
+        </div>
+      </>
+    );
+
 }
 
 export default BookingForm;

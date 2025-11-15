@@ -19,6 +19,8 @@ export default async function HomePage() {
     allSlotsAmount,
   } = data;
 
+  console.log(data);
+
 
   return (
     <div className="space-y-6 ml-4">

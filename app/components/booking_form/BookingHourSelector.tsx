@@ -8,27 +8,22 @@ interface BookingHourSelectorProps {
   isoDate: string;
 }
 
-
-
 const BookingHourSelector = ({isoDate}:BookingHourSelectorProps) => {
   //get data from custom hook 
-  const {availableHour, selectedHour, setSelectedHour, handleBook, showPopup} = useBookingData();
-
-
+  const {availableHour, selectedHour, setSelectedHour, handleBook, showPopup, setShowPopup} = useBookingData();
 
   return (
     <div className="flex flex-col items-center">
-      {/*Select specified hour */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-wrap justify-center gap-3 mb-6"
+        className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-4 sm:mb-6"
       >
         {availableHour.map((hour) => (
           <button
             key={hour}
             onClick={() => setSelectedHour(hour)}
-            className={`px-4 py-2 rounded-lg border transition ${
+            className={`px-3 sm:px-4 text-base py-1.5 sm:py-2 rounded-lg border font-semibold sm:text-lg md:text-xl transition ${
               selectedHour === hour
                 ? "text-2xl bg-amber-800 opacity-70 text-white border-amber-100"
                 : "border-2 text-2xl text-white p-4 rounded-xl shadow-sm focus:ring-2 focus:ring-amber-100 hover:text-amber-100 hover:border-amber-100"
@@ -40,21 +35,36 @@ const BookingHourSelector = ({isoDate}:BookingHourSelectorProps) => {
       </motion.div>
       {availableHour.length === 0 && <p className="text-white/70">No hours available this day</p>}
 
-
-      {selectedHour && (
-        <motion.button
-          onClick={handleBook}
-          whileHover={{ scale: 1.05 }}
-          className="px-6 py-3   border-2 text-2xl text-white p-4 rounded-xl  focus:ring-2 focus:ring-amber-100 hover:text-amber-100 hover:bg-amber-800 hover:border-amber-100 shadow-md transition"
-        >
-          Book Now
-        </motion.button>
-      )}
-      {/*Pass date to BookingPopupContainer all calculatio dispach by useBookingData hook */}
-      <BookingPopupContainer isOpen={showPopup} specifiedDate={isoDate} mode={"create"} selectedHour={selectedHour}/>
+      <motion.button
+        onClick={handleBook}
+        whileHover={{ scale: selectedHour ? 1.03 : 1 }}
+        whileTap={{ scale: selectedHour ? 0.97 : 1 }}
+        disabled={!selectedHour}
+        className={`
+          sm:w-auto
+          px-4 sm:px-6 py-3 sm:py-4
+          text-lg sm:text-xl md:text-2xl
+          font-semibold rounded-xl
+          border-2
+          transition-all duration-200 ease-in-out
+          focus:outline-none focus:ring-2 focus:ring-amber-200
+          shadow-md
+          ${
+            selectedHour
+              ? "bg-amber-700/80 text-white hover:bg-amber-800 hover:border-amber-100"
+              : "bg-amber-800/40 text-amber-300 border-amber-400 cursor-not-allowed opacity-70"
+          }
+        `}
+      >
+        Book Now
+      </motion.button>
+  
+      <BookingPopupContainer isOpen={showPopup} specifiedDate={isoDate} mode={"create"} selectedHour={selectedHour} onClose={() => setShowPopup(false)}/>
     </div>
   )
 }
 
 export default BookingHourSelector;
+
+
 

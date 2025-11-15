@@ -24,11 +24,13 @@ export default function BookingsPage() {
   const perPage = 20;
 
   // 🔹 Filters
-  const [dateFilter, setDateFilter] = useState("day"); // day | week | month | year | custom
+  const [dateFilter, setDateFilter] = useState("week"); // day | week | month | year | custom
   const [customFrom, setCustomFrom] = useState("");
   const [customTo, setCustomTo] = useState("");
   const [sortOrder, setSortOrder] = useState("desc"); // amount sorting
   const [privateOnly, setPrivateOnly] = useState(false);
+  const [canceled, setCanceled] = useState(false);
+  const [activeToure, setActiveTour] = useState(false);
 
   const supabase = createClient();
 
@@ -70,7 +72,9 @@ export default function BookingsPage() {
 
         if (fromDate) query = query.gte("booking_date", fromDate);
         if (toDate) query = query.lte("booking_date", toDate);
-        if (privateOnly) query = query.eq("private", true);
+        if (privateOnly) query = query.eq("private_tour", true);
+        if (canceled) query = query.eq("canceled", true);
+        if (activeToure) query = query.eq("active", true) ;
 
         // 🧾 Pagination logic
         const from = (page - 1) * perPage;
@@ -89,7 +93,7 @@ export default function BookingsPage() {
     }
 
     getBookings();
-  }, [page, dateFilter, customFrom, customTo, sortOrder, privateOnly, supabase]);
+  }, [page, dateFilter, customFrom, customTo, sortOrder, privateOnly, canceled, activeToure, supabase]);
 
   // 🧮 Pagination controls
   const handleNext = () => setPage((p) => p + 1);
@@ -157,6 +161,22 @@ export default function BookingsPage() {
           />
           <span>Private Tours Only</span>
         </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={canceled}
+            onChange={(e) => setCanceled(e.target.checked)}
+          />
+          <span className="text-red-900 bg-red-200 rounded-sm px-1">Canceled</span>
+        </label>
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={activeToure}
+            onChange={(e) => setActiveTour(e.target.checked)}
+          />
+          <span className="text-green-950 bg-green-200 rounded-sm px-1">Active</span>
+        </label>
       </div>
 
       {/* 🧾 Table */}
@@ -171,6 +191,9 @@ export default function BookingsPage() {
             <TableHead>People</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Private</TableHead>
+            <TableHead>Canceled</TableHead>
+            <TableHead>Active</TableHead>
+
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -184,7 +207,9 @@ export default function BookingsPage() {
                 <TableCell>{b.email}</TableCell>
                 <TableCell>{b.people_count}</TableCell>
                 <TableCell>{b.amount}</TableCell>
-                <TableCell>{b.private ? "Yes" : "No"}</TableCell>
+                <TableCell>{b.private_tour ? "Yes" : "No"}</TableCell>
+                <TableCell>{b.canceled ? "Yes" : "No"}</TableCell>
+                <TableCell>{b.active ? "Yes" : "No"}</TableCell>
               </TableRow>
             ))
           ) : (

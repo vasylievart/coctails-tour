@@ -22,10 +22,6 @@ const ChangeHour = ({editable = false, isoDate, bookingDate, mode, capacityInit,
   const [isEditable, setIsEditable] = useState<boolean>(editable);
   const [capacity, setCapacity] = useState<any>(capacityInit);
   const [selectedHour, setSelectedHour] = usePersistentState<string>("booking-hour", "");
-  console.log("selected hour last", selectedHour);
-  console.log("hour mode", mode);
-  console.log("On close?", onClose);
-
 
   useEffect(() => {
     if (mode === "edit" && bookingDate?.booking_hour) {
@@ -75,7 +71,7 @@ const ChangeHour = ({editable = false, isoDate, bookingDate, mode, capacityInit,
     setSelectedHour(newHour);
     setIsEditable(false);
   }
- 
+ /*
   return (
     <>
     { isEditable ?
@@ -94,10 +90,60 @@ const ChangeHour = ({editable = false, isoDate, bookingDate, mode, capacityInit,
         <span>{selectedHour}</span>
         <Pen onClick={() => setIsEditable(true)}  size={16} className="cursor-pointer text-white/75 hover:text-amber-100" />
       </div>}
-      {/*From previous steps we got Date, and pass capacity for ChangeCapacity component*/}
       <ChangeCapacity isoDate={isoDate} capacityInit={capacity} placesInit={bookingDate?.people_count} selectedHour={selectedHour} bookingDate={bookingDate} capacityLeft={capacityInit} mode={mode} onClose={onClose}/>
     </>
-  )
+  )*/
+ return (
+    <div className="flex flex-col gap-4 w-full text-base sm:text-lg">
+      {isEditable ? (
+        <Select onValueChange={handleHourChange}>
+          <SelectTrigger className="border-2 border-white/30 bg-amber-900/70 text-white text-lg rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-200 hover:border-amber-100 w-full">
+            <SelectValue placeholder="Select hour" />
+          </SelectTrigger>
+          <SelectContent className="bg-amber-900/95 border border-white/20 rounded-xl text-white max-h-60 overflow-y-auto">
+            {availableHour.length > 0 ? (
+              availableHour.map((h, i) => (
+                <SelectItem
+                  key={i}
+                  value={h}
+                  className="hover:bg-amber-700/60 text-lg sm:text-base"
+                >
+                  {h}
+                </SelectItem>
+              ))
+            ) : (
+              <div className="px-3 py-2 text-sm text-white/70">
+                No available hours
+              </div>
+            )}
+          </SelectContent>
+        </Select>
+      ) : (
+        <div className="flex justify-between items-center w-full">
+          <span className="text-white/90">Hour:</span>
+          <span className="text-white/80">{selectedHour || "Not selected"}</span>
+          <Pen
+            onClick={() => setIsEditable(true)}
+            size={18}
+            className="cursor-pointer text-white/75 hover:text-amber-100 ml-2 sm:ml-4"
+          />
+        </div>
+      )}
+
+      {/* ✅ Pass data safely to capacity selector */}
+      <ChangeCapacity
+        isoDate={isoDate}
+        capacityInit={capacity}
+        placesInit={bookingDate?.people_count}
+        selectedHour={selectedHour}
+        bookingDate={bookingDate}
+        capacityLeft={capacityInit}
+        mode={mode}
+        onClose={onClose}
+      />
+    </div>
+  );
 }
 
 export default ChangeHour;
+

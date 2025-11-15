@@ -55,7 +55,12 @@ export default function ParallaxFrame() {
   return (
     <div
       ref={frameRef}
-      className="relative w-4/5 md:w-2/3 xl:w-1/2 mx-auto rotate-3 overflow-hidden"
+      //className="relative w-4/5 md:w-2/3 xl:w-1/2 mx-auto rotate-3 overflow-hidden"
+      className="
+        relative mx-auto rotate-2 sm:rotate-3 overflow-hidden
+        w-[95%] sm:w-4/5 md:w-2/3 lg:w-1/2 
+        max-w-[665px]
+      "
     >
       {/* 🖼️ Frame image */}
       <Image
@@ -65,8 +70,20 @@ export default function ParallaxFrame() {
         width={665}
         height={900}
         className="relative w-full z-10"
+        sizes="
+          (max-width: 640px) 90vw,
+          (max-width: 1024px) 60vw,
+          (max-width: 1280px) 45vw,
+          665px
+        "
       />
-      <div className="absolute top-12 bottom-3.5 left-12 right-2.5 rounded-xl overflow-hidden xl:bottom-4.5 xl:right-3.5 2xl:bottom-5.5 2xl:right-4.5 max-w-[665px]">
+      <div 
+      //className="absolute top-12 bottom-3.5 left-12 right-2.5 rounded-xl overflow-hidden xl:bottom-4.5 xl:right-3.5 2xl:bottom-5.5 2xl:right-4.5 max-w-[665px]"
+        className="
+            absolute top-[6%] bottom-[3%] left-[8%] right-[3%]
+            rounded-xl overflow-hidden
+          "
+      >
         <Image
           ref={photoRef}
           src="/images/landscape_barcelona.webp"
@@ -74,6 +91,13 @@ export default function ParallaxFrame() {
           width={665}
           height={998}
           className="w-full object-cover"
+          sizes="
+            (max-width: 640px) 85vw,
+            (max-width: 1024px) 55vw,
+            (max-width: 1280px) 40vw,
+            665px
+          "
+
         />
       </div>
     </div>

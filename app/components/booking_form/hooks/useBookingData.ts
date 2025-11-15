@@ -1,6 +1,6 @@
 import { usePersistentState } from "@/app/hooks/usePresistentState";
 import { createClient } from "@/utils/supabase/client";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useBookingState } from "./useBookingState";
 import { countryPhoneCodes } from "@/app/utils/phone_codes";
 import { format } from "date-fns/format";
@@ -10,7 +10,7 @@ export const useBookingData = () => {
   const { day, setDay, month, setMonth, year, setYear } = useBookingState();
   
   const [availableHour, setAvailableHours] = useState<string[]>([]);
-  const [selectedHour, setSelectedHour] = usePersistentState<string>("booking-hour", "");
+  const [selectedHour, setSelectedHour] = usePersistentState<string | null>("booking-hour", null);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [showPopup, setShowPopup] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -98,10 +98,21 @@ export const useBookingData = () => {
     createPlaces();
     },[capacity]);
 
-  const handleBook = () => {
+  const handleSelectHour = useCallback((hour: string) => {
+    setSelectedHour(hour);
+    setShowPopup(false); // reset popup in case it was open before
+  }, []);
+
+  /*const handleBook = () => {
     if (!day || !selectedHour) return;
     setShowPopup(true);
-  };
+  };*/
+  const handleBook = useCallback(() => {
+    if (selectedHour) {
+      setShowPopup(true);
+    }
+  }, [selectedHour]);
+
 
   function handleHourChange(newHour: string) {
   setSelectedHour(newHour);
@@ -126,16 +137,11 @@ export const useBookingData = () => {
     setIsEditable(false);
     };
 
-  
-
-    console.log("Server show popup", showPopup);
-  
-
   return {
     availableHour,
     setAvailableHours,
     selectedHour,
-    setSelectedHour,
+    setSelectedHour: handleSelectHour,
     capacity,
     setCapacity,
     showPopup,
