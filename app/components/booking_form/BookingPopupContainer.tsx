@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { Calendar, X } from "lucide-react"
-import { useEffect, useState } from "react";
 import ChangeDate from "./ChangeDate";
 import ChangeHour from "./ChangeHour";
 import { Booking } from "@/app/utils/types";

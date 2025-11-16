@@ -9,7 +9,7 @@ import { Booking } from "@/app/utils/types";
 
 interface ChangeCapacityProps { 
   isoDate: string |undefined; 
-  capacityInit: number; 
+  capacityInit?: number; 
   capacityLeft?: number | undefined; 
   placesInit?: number; 
   selectedHour: string | undefined; 
@@ -29,7 +29,7 @@ const ChangeCapacity = ({
   onClose 
 }: ChangeCapacityProps) => { 
   const supabase = createClient(); 
-  const [capacity, setCapacity] = usePersistentState<number>("people-quantity", capacityInit); 
+  const [capacity, setCapacity] = usePersistentState<number | undefined>("people-quantity", capacityInit); 
   const [bookedPlaces, setBookedPlaces] = usePersistentState<number>("booked-places", 0); 
   const [places, setAvalablePlaces] = usePersistentState<number[]>("booking-places", []); 
   const [price, setPrice] = useState<number>(0); 

@@ -10,19 +10,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Booking } from "@/app/utils/types";
 
 interface ReusablePopupProps {
-  open?: boolean;
   bookingData?: Booking; 
   selectedDate?: string;
   bookedPlaces?: number;
   isoDate?: string;
   selectedHour?: string;
-  capacity_left: number;
+  capacity_left?: number;
   mode?: "create" | "edit";
   className?: string;
   onClose?: () => void;
 }
 
-const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open, onClose, isoDate, mode }: ReusablePopupProps) => {
+const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, onClose, isoDate, mode }: ReusablePopupProps) => {
   const supabase = createClient();
   //Set states for form data
   const {formData, setFormData, isoAndCode} = useBookingState();
@@ -41,7 +40,7 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
     }
   }, [bookingData, setFormData]);
 
-  const handleCancel = async (e: any) => {
+  const handleCancel = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const { data, error } = await supabase.rpc("cancel_booking", {
       p_booking_id: bookingData?.id,
@@ -58,7 +57,7 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
     localStorage.clear();
   }
 
-  const handleConfirm = async (e: any) => {
+  const handleConfirm = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     const result = bookingSchema.safeParse(formData);

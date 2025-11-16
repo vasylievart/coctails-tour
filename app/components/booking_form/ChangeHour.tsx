@@ -21,7 +21,7 @@ const ChangeHour = ({editable = false, isoDate, bookingDate, mode, capacityInit,
   //Set states for set hour, get available hours, set capacity
   const [availableHour, setAvailableHours] = useState<string[]>([]);
   const [isEditable, setIsEditable] = useState<boolean>(editable);
-  const [capacity, setCapacity] = useState<any>(capacityInit);
+  const [capacity, setCapacity] = useState<number | undefined>(capacityInit);
   const [selectedHour, setSelectedHour] = usePersistentState<string | undefined>("booking-hour", "");
 
   useEffect(() => {

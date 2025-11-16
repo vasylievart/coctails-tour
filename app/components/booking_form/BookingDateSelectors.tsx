@@ -37,7 +37,7 @@ const BookingDateSelectors = () => {
       const date = `${day}.${month + 1}.${year}`;
       setTempDate(date);
     }
-  }, [day, month, year]);
+  }, [day, month, year, setTempDate]);
   //format day format to "yyyy-MM-dd and use it as a prop for BookingHourSelect"
   const isoDate = tempDate
   .replace(/\./g, "-")

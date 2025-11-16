@@ -53,7 +53,7 @@ export default function TermsOfService() {
           ))}
         </nav>
 
-                <img className="absolute z-10 top-[2%] left-[28%] w-[96px]" src="/images/escudo_barcelona.png" alt="Coat of Arms Barcelona" />
+        <Image width={163} height={194} className="absolute z-10 top-[2%] left-[28%] w-[96px]" src="/images/escudo_barcelona.png" alt="Coat of Arms Barcelona" />
         <section id="about" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">1. About Us</h2>
           <p>

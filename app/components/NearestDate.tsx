@@ -37,9 +37,11 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
   
         if (error) throw error;
         setSlots(data ?? []);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching slots:", err);
-        setError(err?.message || "Failed to load slots");
+        if (err instanceof Error){
+          setError(err.message || "Failed to load slots");
+        }
         setSlots([]);
       } finally {
         setLoading(false);
