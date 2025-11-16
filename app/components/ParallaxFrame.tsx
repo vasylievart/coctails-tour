@@ -55,7 +55,6 @@ export default function ParallaxFrame() {
   return (
     <div
       ref={frameRef}
-      //className="relative w-4/5 md:w-2/3 xl:w-1/2 mx-auto rotate-3 overflow-hidden"
       className="
         relative mx-auto rotate-2 sm:rotate-3 overflow-hidden
         w-[95%] sm:w-4/5 md:w-2/3 lg:w-1/2 
@@ -78,7 +77,6 @@ export default function ParallaxFrame() {
         "
       />
       <div 
-      //className="absolute top-12 bottom-3.5 left-12 right-2.5 rounded-xl overflow-hidden xl:bottom-4.5 xl:right-3.5 2xl:bottom-5.5 2xl:right-4.5 max-w-[665px]"
         className="
             absolute top-[6%] bottom-[3%] left-[8%] right-[3%]
             rounded-xl overflow-hidden

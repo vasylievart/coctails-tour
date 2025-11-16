@@ -110,7 +110,6 @@ const Main = () => {
       <section className="relative h-screen flex justify-center items-center">
         <Image 
           ref={coctailOneRef} 
-          //className="absolute top-[6%] left-[3%]  max-w-[160px]"
           className="
             absolute top-[6%] left-[3%] 
             max-w-[120px]      /* mobile default */
@@ -127,7 +126,6 @@ const Main = () => {
         />
         <Image 
           ref={coctailTwoRef} 
-          //className="absolute top-[8%] right-[8%] max-w-[240px]  z-20" 
           className="
             absolute top-[8%] right-[8%] 
             max-w-[160px]      /* mobile default */
@@ -144,7 +142,6 @@ const Main = () => {
         />
         <Image 
           ref={coctailThreeRef} 
-          //className="absolute top-[24%] left-[24%] max-w-[240px]  z-20" 
           className="
             absolute top-[24%] left-[24%] 
             max-w-[160px]      /* mobile default */
@@ -161,7 +158,6 @@ const Main = () => {
         />
         <Image 
           ref={coctailFourRef}  
-          //className="absolute top-[32%] right-[24%] max-w-[240px]  z-20" 
           className="
             absolute top-[32%] right-[24%] 
             max-w-[160px]      /* mobile default */
@@ -177,7 +173,6 @@ const Main = () => {
           alt="Coctail" />
         <Image 
           ref={coctailFiveRef} 
-          //className="absolute top-[64%] left-[18%] max-w-[240px]  z-20" 
           className="
             absolute top-[64%] left-[18%] 
             max-w-[160px]      /* mobile default */
@@ -193,7 +188,6 @@ const Main = () => {
           alt="Coctail" />
         <Image 
           ref={coctailSixRef} 
-          //className="absolute top-[72%] right-[38%] max-w-[240px]  z-20" 
           className="
             absolute top-[72%] right-[38%] 
             max-w-[160px]      /* mobile default */
@@ -211,7 +205,6 @@ const Main = () => {
       <section className="relative h-screen flex justify-center items-center">
         <Image 
           ref={escudoRef} 
-          //className="absolute top-[12%] right-[16%] max-w-[180px]  z-20" 
           className="
             absolute top-[12%] right-[16%] 
             max-w-[120px]      /* mobile default */
@@ -227,7 +220,6 @@ const Main = () => {
           alt="Coat of Arms of Barcelona" />
         <Image 
           ref={panConTomateRef} 
-          //className="absolute top-[22%] left-[20%] max-w-[180px]  z-20" 
           className="
             absolute top-[22%] left-[20%] 
             max-w-[120px]      /* mobile default */
@@ -243,7 +235,6 @@ const Main = () => {
           alt="Pan con tomate" />
         <Image 
           ref={postMarkOneRef} 
-          //className="absolute top-[36%] right-[36%] max-w-[180px]  z-20" 
           className="
             absolute top-[36%] right-[36%] 
             max-w-[120px]      /* mobile default */
@@ -259,7 +250,6 @@ const Main = () => {
           alt="Postmark Catalonia" />
         <Image 
         ref={postMarkTwoRef} 
-        //className="absolute top-[32%] left-[4%] max-w-[180px]  z-20" 
         className="
             absolute top-[32%] left-[4%] 
             max-w-[120px]      /* mobile default */

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -69,7 +70,7 @@ export default function PrivacyPolicy() {
               This Privacy Policy explains how we collect, use, and protect your personal information when you use our website and booking services.
             </p>
         </section>
-        <img className="absolute w-[480px] top-[8%] right-[4%] z-10 rotate-12" src="./images/coctails_header.webp" alt="logo" />
+        <Image width={480} height={165} className="absolute w-[480px] top-[8%] right-[4%] z-10 rotate-12" src="/images/coctails_header.webp" alt="logo" />
 
 
         <section id="controller controller" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
@@ -141,7 +142,7 @@ export default function PrivacyPolicy() {
             these rules.
           </p>
         </section>
-        <img className="absolute left-[2%] top-[150%] w-[240px] -rotate-12" src="/images/pan_con_tomate.webp" alt="Brread with tomatoes" />
+        <Image width={240} height={325} className="absolute left-[2%] top-[150%] w-[240px] -rotate-12" src="/images/pan_con_tomate.webp" alt="Brread with tomatoes" />
 
         <section id="data retention" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">6. Data Retention</h2>
@@ -166,7 +167,7 @@ export default function PrivacyPolicy() {
             All third-party providers we use (such as hosting, email, or database services) operate within the **European Economic Area (EEA)** or under EU-approved data protection frameworks.
           </p>
         </section>
-        <img className="absolute w-[280px] right-[8%] top-[240%] rotate-6 z-10" src="/images/coctail_5.png" alt="Coctail" />
+        <Image width={280} height={373} className="absolute w-[280px] right-[8%] top-[240%] rotate-6 z-10" src="/images/coctail_5.png" alt="Coctail" />
 
         <section id="age" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">8. Age Restriction</h2>
@@ -180,7 +181,7 @@ export default function PrivacyPolicy() {
             If we become aware that we have received data from someone under 18, we will delete it immediately.
           </p>
         </section>
-        <img className="absolute top-[332%] left-[18%] z-10" src="/images/over_18_years.webp" alt="Age restriction" />
+        <Image width={64} height={60} className="absolute top-[332%] left-[18%] z-10" src="/images/over_18_years.webp" alt="Age restriction" />
 
         <section id="data protection" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">9. Your Data Protection Rights</h2>

@@ -4,12 +4,13 @@ import { createClient } from "@/utils/supabase/client";
 import { Pen } from "lucide-react"
 import { useEffect, useState } from "react";
 import ChangeCapacity from "./ChangeCapacity";
+import { Booking} from "@/app/utils/types";
 
 interface ChangeHourProps {
   editable: boolean;
-  isoDate: string;
-  hour: any;
-  bookingDate?: any;
+  isoDate: string | undefined;
+  hour: string | undefined;
+  bookingDate?: Booking;
   capacityInit?: number;
   mode?: "create" | "edit";
   onClose?: () => void;
@@ -21,7 +22,7 @@ const ChangeHour = ({editable = false, isoDate, bookingDate, mode, capacityInit,
   const [availableHour, setAvailableHours] = useState<string[]>([]);
   const [isEditable, setIsEditable] = useState<boolean>(editable);
   const [capacity, setCapacity] = useState<any>(capacityInit);
-  const [selectedHour, setSelectedHour] = usePersistentState<string>("booking-hour", "");
+  const [selectedHour, setSelectedHour] = usePersistentState<string | undefined>("booking-hour", "");
 
   useEffect(() => {
     if (mode === "edit" && bookingDate?.booking_hour) {
@@ -29,11 +30,11 @@ const ChangeHour = ({editable = false, isoDate, bookingDate, mode, capacityInit,
     } else {
       setSelectedHour(hour);
     }
-  }, [mode, bookingDate?.booking_hour]);
+  }, [mode, bookingDate?.booking_hour, hour, setSelectedHour]);
 
   let initialTemp;
   if (mode==="edit"){
-    initialTemp = bookingDate.booking_date;
+    initialTemp = bookingDate?.booking_date;
   } else {
     initialTemp = isoDate;
   }
@@ -65,34 +66,13 @@ const ChangeHour = ({editable = false, isoDate, bookingDate, mode, capacityInit,
   };
   getHours();
     
-  }, [initialTemp]);
+  }, [initialTemp, supabase]);
 
    function handleHourChange(newHour: string) {
     setSelectedHour(newHour);
     setIsEditable(false);
   }
- /*
-  return (
-    <>
-    { isEditable ?
-        <Select  onValueChange={handleHourChange}>
-          <SelectTrigger className="border-2 text-xl text-amber-50  rounded-lg focus:ring-2 focus:ring-amber-100">
-            <SelectValue placeholder="Hours"/>
-          </SelectTrigger>
-          <SelectContent>
-            {availableHour.map((h, i) => (
-                <SelectItem key={i} value={h}>{h}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select> :
-      <div className="flex justify-between items-center">
-        <span>Hour:</span>
-        <span>{selectedHour}</span>
-        <Pen onClick={() => setIsEditable(true)}  size={16} className="cursor-pointer text-white/75 hover:text-amber-100" />
-      </div>}
-      <ChangeCapacity isoDate={isoDate} capacityInit={capacity} placesInit={bookingDate?.people_count} selectedHour={selectedHour} bookingDate={bookingDate} capacityLeft={capacityInit} mode={mode} onClose={onClose}/>
-    </>
-  )*/
+
  return (
     <div className="flex flex-col gap-4 w-full text-base sm:text-lg">
       {isEditable ? (

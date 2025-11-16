@@ -6,11 +6,13 @@ import { countryPhoneCodes } from "@/app/utils/phone_codes";
 import { format } from "date-fns/format";
 
 export const useBookingData = () => {
-  const supabase = createClient();
+  // ✔ supabase is stable, so it's safe to ignore as dependency
+  const supabase = useMemo(() => createClient(), []);
+
   const { day, setDay, month, setMonth, year, setYear } = useBookingState();
-  
+
   const [availableHour, setAvailableHours] = useState<string[]>([]);
-  const [selectedHour, setSelectedHour] = usePersistentState<string | null>("booking-hour", null);
+  const [selectedHour, setSelectedHour] = usePersistentState<string | undefined>("booking-hour", undefined);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [showPopup, setShowPopup] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -20,26 +22,31 @@ export const useBookingData = () => {
   const [places, setAvalablePlaces] = usePersistentState<number[]>("booking-places", [0]);
   const [bookedPlaces, setBookedPlaces] = usePersistentState<number>("booked-places", 0);
 
-
   const isoAndCode = countryPhoneCodes;
+
   const price = 150;
   const totalAmount = price * bookedPlaces;
-  
-  const isoDate = tempDate
-  .replace(/\./g, "-")
-  .split("-")
-  .reverse()
-  .join("-")
-  .trim();
-  
-   useEffect(() => {
-      if (day && month !== null && year) {
-        const date = `${day}.${month + 1}.${year}`;
-        setTempDate(date);
-      }
-    }, [day, month, year]);
 
-  // 🟢 Fetch available hours when date changes
+  const isoDate = tempDate
+    .replace(/\./g, "-")
+    .split("-")
+    .reverse()
+    .join("-")
+    .trim();
+
+  // -----------------------------
+  // SET TEMP DATE WHEN DAY/MONTH/YEAR CHANGE
+  // -----------------------------
+  useEffect(() => {
+    if (day && month !== null && year) {
+      const date = `${day}.${month + 1}.${year}`;
+      setTempDate(date);
+    }
+  }, [day, month, year]);
+
+  // -----------------------------
+  // FETCH HOURS
+  // -----------------------------
   useEffect(() => {
     const getHours = async () => {
       if (!isoDate) {
@@ -60,15 +67,16 @@ export const useBookingData = () => {
       }
 
       if (data) {
-        const hours = data.map((item) => item.slot_hour);
-        setAvailableHours(hours);
+        setAvailableHours(data.map((item) => item.slot_hour));
       }
     };
 
     getHours();
-  }, [isoDate]);
+  }, [isoDate, supabase]);
 
-  // 🟢 Update capacity whenever hour changes
+  // -----------------------------
+  // FETCH CAPACITY FOR SELECTED HOUR
+  // -----------------------------
   useEffect(() => {
     if (!isoDate || !selectedHour) return;
 
@@ -84,58 +92,55 @@ export const useBookingData = () => {
     };
 
     getCapacity();
-  }, [isoDate, selectedHour]);
+  }, [isoDate, selectedHour, supabase, setCapacity]);
 
+  // -----------------------------
+  // CREATE PLACES ARRAY
+  // -----------------------------
   useMemo(() => {
-      const createPlaces = () => {
-      const pl = [];
-      for ( let i = 1; i<capacity+1; i++ ) {
-        pl.push(i);
-      }
-      setAvalablePlaces(pl)
-      return places;
-    }
-    createPlaces();
-    },[capacity]);
+    const arr = Array.from({ length: capacity }, (_, i) => i + 1);
+    setAvalablePlaces(arr);
+  }, [capacity, setAvalablePlaces]);
 
-  const handleSelectHour = useCallback((hour: string) => {
-    setSelectedHour(hour);
-    setShowPopup(false); // reset popup in case it was open before
-  }, []);
+  // -----------------------------
+  // SELECT HOUR
+  // -----------------------------
+  const handleSelectHour = useCallback(
+    (hour: string) => {
+      setSelectedHour(hour);
+      setShowPopup(false);
+    },
+    [setSelectedHour]
+  );
 
-  /*const handleBook = () => {
-    if (!day || !selectedHour) return;
-    setShowPopup(true);
-  };*/
   const handleBook = useCallback(() => {
-    if (selectedHour) {
-      setShowPopup(true);
-    }
+    if (selectedHour) setShowPopup(true);
   }, [selectedHour]);
 
+  const handleHourChange = (newHour: string) => {
+    setSelectedHour(newHour);
+    setIsEditable(false);
+  };
 
-  function handleHourChange(newHour: string) {
-  setSelectedHour(newHour);
-  setIsEditable(false);
-  }
-
-
+  // -----------------------------
+  // SELECT DATE FROM CALENDAR
+  // -----------------------------
   const handleCalendarSelect = (newDate: Date | undefined) => {
     if (!newDate) return;
-  
+
     const d = newDate.getDate();
     const m = newDate.getMonth();
     const y = newDate.getFullYear();
-  
+
     setSelectedDate(newDate);
     setTempDate(format(newDate, "dd.MM.yyyy"));
     setDay(d);
     setMonth(m);
     setYear(y);
-  
+
     setShowCalendar(false);
     setIsEditable(false);
-    };
+  };
 
   return {
     availableHour,
@@ -162,6 +167,7 @@ export const useBookingData = () => {
     bookedPlaces,
     setBookedPlaces,
     isoDate,
-    handleBook
+    handleBook,
   };
 };
+

@@ -5,10 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { faqs } from "../data/faq";
 
-
-
-
-
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -67,9 +63,7 @@ export default function FAQSection() {
               <span className="font-semibold text-base sm:text-lg md:text-xl text-white leading-snug">
                 {faq.question}
               </span>
-              {/*<Image className={`h-12 w-12 text-amber-800 transition-transform ${
-                  openIndex === index ? "rotate-180 duration-300" : ""
-                }`} src="/images/faq/barcelona_pavement_style.png" alt="Barcelona's Pavement" width={48} height={48} loading="lazy"/>*/}
+             
               <Image
                 className={`
                   w-8 sm:w-10 md:w-12 h-auto transition-transform

@@ -5,14 +5,15 @@ import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react"; 
 import TotalAmount from "./TotalAmount"; 
 import BookingForm from "./BookingForm"; 
+import { Booking } from "@/app/utils/types";
 
 interface ChangeCapacityProps { 
-  isoDate: string; 
+  isoDate: string |undefined; 
   capacityInit: number; 
-  capacityLeft?: number; 
+  capacityLeft?: number | undefined; 
   placesInit?: number; 
-  selectedHour: string; 
-  bookingDate?: any; 
+  selectedHour: string | undefined; 
+  bookingDate?: Booking; 
   mode?: "create" | "edit"; 
   onClose?: () => void; 
 } 
@@ -69,8 +70,7 @@ const ChangeCapacity = ({
       }; 
 
       fetchSlotData(); 
-    }, [isoDate, selectedHour, mode, bookingDate, bookedPlaces]);
-    console.log("Price:", price) 
+    }, [isoDate, selectedHour, mode, bookingDate, bookedPlaces, setBookedPlaces, capacityInit, setCapacity, supabase]);
 
     useEffect(() => { 
       if (mode !== "edit") { 
@@ -89,8 +89,8 @@ const ChangeCapacity = ({
 
       const placesArray = Array.from({ length: cap }, (_, i) => i + 1); 
       setAvalablePlaces(placesArray); 
-    }, [mode, capacityInit, capacityLeft, bookingDate?.people_count]); 
-    console.log("Booking places", bookedPlaces);
+    }, [mode, capacityInit, capacityLeft, bookingDate?.people_count, setAvalablePlaces]); 
+  
 
     return ( 
       <div className="flex flex-col w-full text-base sm:text-lg"> 

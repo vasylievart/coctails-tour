@@ -1,16 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { Slots } from "../utils/types";
 
 interface NearestDateMobileProps {
   showPopup: boolean;
   setShowPopup: (value: boolean) => void;
-  prettySlotLabel: (slot: any) => string;
-  closest: any;
+  prettySlotLabel: (slot: Slots | null) => string;
+  closest: Slots | null;
   handleQuickBook: () => void;
 }
 
 const NearestDateMobile = ({
-  showPopup,
   setShowPopup,
   prettySlotLabel,
   closest,
@@ -63,7 +63,7 @@ const NearestDateMobile = ({
               <span className="opacity-90">Places left:</span>
               <span
                 className={`font-bold ${
-                  closest?.capacity_left <= 3 ? "text-red-300" : "text-white"
+                  (closest?.capacity_left ?? Infinity) <= 3 ? "text-red-300" : "text-white"
                 }`}
               >
                 {closest?.capacity_left ?? "--"}

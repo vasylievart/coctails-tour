@@ -7,14 +7,15 @@ import { format } from "date-fns";
 import { useBookingState } from "./hooks/useBookingState";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Booking } from "@/app/utils/types";
 
 interface ReusablePopupProps {
   open?: boolean;
-  bookingData?: any; 
-  selectedDate?: any;
+  bookingData?: Booking; 
+  selectedDate?: string;
   bookedPlaces?: number;
   isoDate?: string;
-  selectedHour?: any;
+  selectedHour?: string;
   capacity_left: number;
   mode?: "create" | "edit";
   className?: string;
@@ -25,7 +26,6 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
   const supabase = createClient();
   //Set states for form data
   const {formData, setFormData, isoAndCode} = useBookingState();
-  const [showPopup, setShowPopup] = useState<boolean | undefined>(open);
   const [privateTour, setPrivateTour] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
   const handleCancel = async (e: any) => {
     e.preventDefault();
     const { data, error } = await supabase.rpc("cancel_booking", {
-      p_booking_id: bookingData.id,
+      p_booking_id: bookingData?.id,
     });
 
     if (error || !data?.success) {
@@ -54,7 +54,6 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
     }
 
     toast.success(data.message || "Booking canceled successfully!");
-    setShowPopup(false);
     onClose?.();
     localStorage.clear();
   }
@@ -89,7 +88,6 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
         });
 
         toast.success("Booking updated successfully!");
-        setShowPopup(false);
         setFormData({
           full_name: "",
           email: "",
@@ -120,7 +118,6 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, open
         }
 
         toast.success(data.message || "Booking created successfully!");
-        setShowPopup(false);
         onClose?.();
         localStorage.clear();
   

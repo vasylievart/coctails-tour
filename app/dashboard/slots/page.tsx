@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/table";
 import { Select, SelectItem, SelectTrigger, SelectContent, SelectValue } from "@/components/ui/select";
 import { createSlot, toggleSlot, updateSlotPrice } from "./slot.actions";
+import { Slots } from "@/app/utils/types";
 
 export default function SlotsPage() {
-  const [slots, setSlots] = useState<any[]>([]);
+  const [slots, setSlots] = useState<Slots[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -45,9 +46,11 @@ export default function SlotsPage() {
         const { data, error } = await query.range(from, to);
         if (error) throw error;
         setSlots(data || []);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error(err);
-        setError(err.message);
+        if(err instanceof Error) {
+          setError(err.message);
+        } 
       } finally {
         setLoading(false);
       }
@@ -141,10 +144,10 @@ export default function SlotsPage() {
                     <Input
                       type="number"
                       defaultValue={slot.price}
-                      onChange={(e) => handlePriceChange(slot.id, e.target.value)}
+                      onChange={(e) => handlePriceChange(String(slot.id), e.target.value)}
                       className="w-24"
                     />
-                    <Button size="sm" onClick={() => handlePriceSubmit(slot.id)}>
+                    <Button size="sm" onClick={() => handlePriceSubmit(String(slot.id))}>
                       Update
                     </Button>
                   </div>
@@ -152,7 +155,7 @@ export default function SlotsPage() {
                 {/*<TableCell>{slot.private ? "Yes" : "No"}</TableCell>*/}
                 <TableCell>{slot.disabled ? "No" : "Yes"}</TableCell>
                 <TableCell>
-                  <form action={toggleSlot.bind(null, slot.id, slot.disabled)}>
+                  <form action={toggleSlot.bind(null, String(slot.id), slot.disabled ?? false)}>
                     <Button type="submit" variant={slot.disabled ? "default" : "destructive"}>
                       {slot.disabled ? "Enable" : "Disable"}
                     </Button>

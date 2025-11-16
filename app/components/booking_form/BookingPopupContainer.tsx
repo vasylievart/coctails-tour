@@ -3,13 +3,14 @@ import { Calendar, X } from "lucide-react"
 import { useEffect, useState } from "react";
 import ChangeDate from "./ChangeDate";
 import ChangeHour from "./ChangeHour";
+import { Booking } from "@/app/utils/types";
 
 interface BookingPopupContainerProps {
   isOpen: boolean;
-  specifiedDate: any;
-  selectedHour?: any;
+  specifiedDate: string | undefined;
+  selectedHour?: string | undefined;
   open?: boolean;
-  bookingData?: any; 
+  bookingData?: Booking; 
   capacity_left?: number | undefined;
   mode?: "create" | "edit";
   onClose?: () => void;
@@ -17,11 +18,6 @@ interface BookingPopupContainerProps {
 
 const BookingPopupContainer = ({isOpen= false, specifiedDate, bookingData, capacity_left, mode, selectedHour,  onClose}: BookingPopupContainerProps) => {
   //set state localy if BookingPopup is open
-  const [showPopup, setShowPopup] = useState<boolean>(isOpen);
-
-  useEffect(() => {
-    setShowPopup(isOpen);
-  }, [isOpen]);
 
   return (
     <AnimatePresence>

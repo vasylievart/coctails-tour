@@ -38,7 +38,6 @@ import Footer from "./components/Footer";
 import Main from "./components/Main";
 import NearestDate from "./components/NearestDate";
 import BookingContainer from "./components/booking_form/BookingContainer";
-import { Toaster } from "react-hot-toast";
 
 // 💤 Lazy load non-critical components
 const FAQSection = dynamic(() => import("./components/FAQSection"), {

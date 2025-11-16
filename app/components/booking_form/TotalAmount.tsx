@@ -1,22 +1,9 @@
-/*interface TotalAmountProps {
-  totalAmount: number;
-}
-const TotalAmount = ({totalAmount} : TotalAmountProps) => {
-  return (
-    <div className="flex justify-between items-center">
-      <span>Price:</span>
-      <span>{totalAmount} €</span>
-    </div>
-  )
-}
-
-export default TotalAmount;*/
 interface TotalAmountProps {
-  totalAmount: number;
+  totalAmount: number | undefined;
 }
 
 const TotalAmount = ({ totalAmount }: TotalAmountProps) => {
-  console.log("Total Amount", totalAmount);
+
   return (
     <div
       className="

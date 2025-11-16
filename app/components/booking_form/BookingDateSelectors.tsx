@@ -20,7 +20,7 @@ const BookingDateSelectors = () => {
   //set current day as day
   useEffect(() => {
     setDay(currentDay)
-  },[currentDay]);
+  },[currentDay, setDay]);
   //get available days, depend on current month
   useEffect(() => {
     if (month !== null) {

@@ -4,15 +4,18 @@ import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { getBookingByEmailAndPhone, getCapacityLeftBySlotId} from "../dashboard/bookings/booking.actions";
 import BookingPopupContainer from "./booking_form/BookingPopupContainer";
+import { Booking} from "../utils/types";
 
 
 export default function ChangeBooking() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [booking, setBooking] = useState<any | null>(null);
-  const [capacity, setCapacity] = useState<any | null>(null);
+  const [booking, setBooking] = useState<Booking | null>(null);
+  const [capacity, setCapacity] = useState<number | undefined>(undefined);
   const [notFound, setNotFound] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  
 
 const handleSubmit = (e: React.FormEvent) => {
   e.preventDefault();
@@ -34,11 +37,12 @@ const handleSubmit = (e: React.FormEvent) => {
 
 const handleClosePopup = () => {
   setBooking(null);
-  setCapacity(null);
+  setCapacity(undefined);
   setNotFound(false);
   setEmail("");
   setPhone("");
 }
+
 
   if (booking) {
     return (
