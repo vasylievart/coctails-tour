@@ -38,6 +38,8 @@ import Footer from "./components/Footer";
 import Main from "./components/Main";
 import NearestDate from "./components/NearestDate";
 import BookingContainer from "./components/booking_form/BookingContainer";
+import NewMain from "./components/NewMain";
+
 
 // 💤 Lazy load non-critical components
 const FAQSection = dynamic(() => import("./components/FAQSection"), {
@@ -69,10 +71,13 @@ export default function Home() {
       <main className="w-full flex flex-col items-center px-4 sm:px-6 md:px-8 space-y-12 sm:space-y-16 mt-24 sm:mt-28">
         <NearestDate />
       
-        <Main />
+        {/*<Main />*/}
+        <NewMain/>
+     
+        
 
         {/* Booking */}
-        <section className="w-full max-w-5xl px-2 sm:px-4 z-50">
+        <section className="w-full max-w-5xl px-2 sm:px-4 z-40">
           <BookingContainer />
         </section>
 

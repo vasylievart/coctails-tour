@@ -48,7 +48,7 @@ const BookingDateSelectors = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-6 items-center w-full px-2 sm:px-4 mb-6 z-50">
+      <div className="flex flex-col gap-6 items-center w-full px-2 sm:px-4 mb-6 z-40">
         {/*Select specified year*/}
         <div className="flex flex-wrap w-full gap-3 sm:gap-4 justify-center max-w-lg">
           <Select 

@@ -152,7 +152,7 @@ const NearestDate = ({ onQuickBook, refreshInterval = 0 }: Props) => {
         <NearestDateMobile showPopup={showPopup} setShowPopup={setShowPopup} closest={closest} handleQuickBook={handleQuickBook} prettySlotLabel={prettySlotLabel}/>
       </div>
       {showPopup && (
-        <div>
+        <div className="z-50">
           <BookingPopupContainer 
             isOpen={showPopup} 
             specifiedDate={closest?.slot_date} 

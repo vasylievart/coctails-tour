@@ -27,7 +27,7 @@ export default async function HomePage() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Dashboard Home</h1>
         <form >
-          <button type="submit" onClick={signOut} className="bg-red-500 text-white px-4 py-2 rounded">Sign Out</button>
+          <button type="submit" onClick={signOut} className="bg-red-500 ml-4 text-white px-4 py-2 rounded">Sign Out</button>
         </form>
       </div>
       <DashboardCards 

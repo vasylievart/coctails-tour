@@ -27,7 +27,7 @@ const BookingContainer = () => {
       <div
         className="
           w-full max-w-md sm:max-w-lg md:max-w-xl
-          flex justify-center
+          flex justify-center z-40
         "
       >
         <BookingDateSelectors />

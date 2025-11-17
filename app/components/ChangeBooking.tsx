@@ -60,7 +60,7 @@ const handleClosePopup = () => {
         text-base sm:text-lg md:text-xl text-amber-50
         focus:ring-2 focus:ring-amber-100
         space-y-5 sm:space-y-6
-        z-50
+        z-40
       "
       >
       <h2
