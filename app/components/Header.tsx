@@ -171,7 +171,7 @@ const AnimatedHeader = () => {
     });
 
     // Debounced refresh
-    let timeout: any;
+    let timeout: ReturnType<typeof setTimeout>;
     const refresh = () => {
       clearTimeout(timeout);
       timeout = setTimeout(() => ScrollTrigger.refresh(), 200);

@@ -35,7 +35,6 @@ export default function Home() {
 import dynamic from "next/dynamic";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Main from "./components/Main";
 import NearestDate from "./components/NearestDate";
 import BookingContainer from "./components/booking_form/BookingContainer";
 import NewMain from "./components/NewMain";
@@ -71,7 +70,6 @@ export default function Home() {
       <main className="w-full flex flex-col items-center px-4 sm:px-6 md:px-8 space-y-12 sm:space-y-16 mt-24 sm:mt-28">
         <NearestDate />
       
-        {/*<Main />*/}
         <NewMain/>
      
         

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -29,7 +29,7 @@ const Main = () => {
   const postMarkTwoRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    let ctx = gsap.context(() => {
+    const ctx = gsap.context(() => {
     
       const elements = [
         { ref: streetOneRef, from: { y: 200, rotate: -90}, to: { y: 0, rotate: 24 } },
