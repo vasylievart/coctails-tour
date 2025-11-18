@@ -1,13 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-
-
-
 import ParallaxFrame from "./ParallaxFrame";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,53 +24,47 @@ const Main = () => {
   const postMarkOneRef = useRef<HTMLImageElement>(null);
   const postMarkTwoRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-    
-      const elements = [
-        { ref: streetOneRef, from: { y: 200, rotate: -90}, to: { y: 0, rotate: 24 } },
-        { ref: streetTwoRef, from: { y: 240, rotate: -60 }, to: { y: 0, rotate: 12} },
-        { ref: coctailOneRef, from: { y: 264, rotate: -30}, to: { y: 0, rotate: 6} },
-        { ref: coctailTwoRef, from: { y: 272, rotate: -35 }, to: { y: 0, rotate: 12 } },
-        { ref: coctailThreeRef, from: { y: 296, rotate: -35 }, to: { y: 0, rotate: 9 } },
-        { ref: coctailFourRef, from: { y: 300, rotate: -35 }, to: { y: 0, rotate: 18 } },
-        { ref: coctailFiveRef, from: { y: 320, rotate: -35 }, to: { y: 0, rotate: 6 } },
-        { ref: coctailSixRef, from: { y: 364, rotate: -35 }, to: { y: 0, rotate: 24 } },
-        { ref: frameRef, from: { y: 500, rotate: -15 }, to: { y: 0, rotate: 3 } },
-        { ref: photoRef, from: { y: 500}, to: { y: 0, rotate: 3 }},
-        { ref: escudoRef, from: {y: 372, rotate: -35}, to: {y: 0, rotate: -6}},
-        { ref: panConTomateRef, from: {y: 396, rotate: -35}, to: {y: 0, rotate: 9}},
-        { ref: postMarkOneRef, from: {y: 400, rotate: -35}, to: {y:0, rotate: -12}}
-      ];
-      const triggers: ScrollTrigger[] = [];
+  useLayoutEffect(() => {
+    const elements = [
+      { ref: streetOneRef, from: { y: 220, rotate: -90}, to: { y: 0, rotate: 24 } },
+      { ref: streetTwoRef, from: { y: 240, rotate: -60 }, to: { y: 0, rotate: 12} },
+      { ref: coctailOneRef, from: { y: 264, rotate: -30}, to: { y: 0, rotate: 6} },
+      { ref: coctailTwoRef, from: { y: 272, rotate: -35 }, to: { y: 0, rotate: 12 } },
+      { ref: coctailThreeRef, from: { y: 296, rotate: -35 }, to: { y: 0, rotate: 9 } },
+      { ref: coctailFourRef, from: { y: 300, rotate: -35 }, to: { y: 0, rotate: 18 } },
+      { ref: coctailFiveRef, from: { y: 320, rotate: -35 }, to: { y: 0, rotate: 6 } },
+      { ref: coctailSixRef, from: { y: 364, rotate: -35 }, to: { y: 0, rotate: 24 } },
+      { ref: frameRef, from: { y: 500, rotate: -15 }, to: { y: 0, rotate: 3 } },
+      { ref: photoRef, from: { y: 500}, to: { y: 0, rotate: 3 }},
+      { ref: escudoRef, from: {y: 372, rotate: -35}, to: {y: 0, rotate: -6}},
+      { ref: panConTomateRef, from: {y: 396, rotate: -35}, to: {y: 0, rotate: 9}},
+      { ref: postMarkOneRef, from: {y: 400, rotate: -35}, to: {y:0, rotate: -12}},
+      { ref: postMarkOneRef, from: {y: 420, rotate: -35}, to: {y:0, rotate: -12}}
+    ];
 
-      elements.forEach(({ ref, from, to }) => {
-        if (!ref.current) return;
+    elements.forEach(({ ref, from, to }) => {
+      if (!ref.current) return;
 
-        const anim = gsap.fromTo(
-          ref.current,
-          from,
-          {
-            ...to,
-            duration: 1.5,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: ref.current,     
-              start: "top 90%",         
-              toggleActions: "play none none reverse", 
-            },
-          }
-        );
-        if (anim.scrollTrigger) {
-          triggers.push(anim.scrollTrigger);
+      gsap.fromTo(
+        ref.current,
+        from,
+        {
+          ...to,
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ref.current,     
+            start: "top 85%",         
+            toggleActions: "play none none reverse", 
+          },
         }
-      });
-
-    
-      return () => triggers.forEach(t => t.kill())
+      );
     });
-    return () => ctx.revert();
-      
+
+    // Cleanup: kill triggers on unmount
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   // --- JSX ---
@@ -91,10 +81,10 @@ const Main = () => {
             md:max-w-[240px]   /* ≥768px */
             lg:max-w-[280px]   /* ≥1024px */
             xl:max-w-[320px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20
+            z-20
           "
           src="/images/barcelona_street_1.webp" 
-          loading="eager" 
+          loading="lazy" 
           width={665} 
           height={900} 
           alt="Street of Barcelona, Born" 
@@ -109,7 +99,7 @@ const Main = () => {
             md:max-w-[300px]   /* ≥768px */
             lg:max-w-[320px]   /* ≥1024px */
             xl:max-w-[396px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/barcelona_street_2.webp" 
           loading="lazy" 
           width={665} 
@@ -128,7 +118,7 @@ const Main = () => {
             md:max-w-[160px]   /* ≥768px */
             lg:max-w-[172px]   /* ≥1024px */
             xl:max-w-[200px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/coctail_1.png" 
           loading="lazy" 
           width={191} 
@@ -144,7 +134,7 @@ const Main = () => {
             md:max-w-[240px]   /* ≥768px */
             lg:max-w-[280px]   /* ≥1024px */
             xl:max-w-[320px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/coctail_2.png" 
           loading="lazy" 
           width={368} 
@@ -160,7 +150,7 @@ const Main = () => {
             md:max-w-[240px]   /* ≥768px */
             lg:max-w-[280px]   /* ≥1024px */
             xl:max-w-[300px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/coctail_3.png" 
           loading="lazy" 
           width={313} 
@@ -176,7 +166,7 @@ const Main = () => {
             md:max-w-[240px]   /* ≥768px */
             lg:max-w-[280px]   /* ≥1024px */
             xl:max-w-[320px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/coctail_4.png"
           loading="lazy" 
           width={223} 
@@ -191,7 +181,7 @@ const Main = () => {
             md:max-w-[240px]   /* ≥768px */
             lg:max-w-[280px]   /* ≥1024px */
             xl:max-w-[320px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/coctail_5.png" 
           loading="lazy" 
           width={364} 
@@ -206,7 +196,7 @@ const Main = () => {
             md:max-w-[240px]   /* ≥768px */
             lg:max-w-[280px]   /* ≥1024px */
             xl:max-w-[320px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/coctail_6.png" 
           loading="lazy" 
           width={372} 
@@ -223,7 +213,7 @@ const Main = () => {
             md:max-w-[180px]   /* ≥768px */
             lg:max-w-[200px]   /* ≥1024px */
             xl:max-w-[240px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/escudo_barcelona.png" 
           loading="lazy" 
           width={163} 
@@ -238,7 +228,7 @@ const Main = () => {
             md:max-w-[180px]   /* ≥768px */
             lg:max-w-[200px]   /* ≥1024px */
             xl:max-w-[240px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/pan_con_tomate.webp" 
           loading="lazy" 
           width={665} 
@@ -253,7 +243,7 @@ const Main = () => {
             md:max-w-[180px]   /* ≥768px */
             lg:max-w-[200px]   /* ≥1024px */
             xl:max-w-[240px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
           src="/images/postmark_1.png" 
           loading="lazy" 
           width={163} 
@@ -268,7 +258,7 @@ const Main = () => {
             md:max-w-[180px]   /* ≥768px */
             lg:max-w-[200px]   /* ≥1024px */
             xl:max-w-[240px]   /* ≥1280px */
-            will-change-transform [transform:translateZ(0)] z-20"
+            z-20"
         src="/images/postmark_2.png" 
         loading="lazy" 
         width={400} 

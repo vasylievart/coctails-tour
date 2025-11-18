@@ -67,7 +67,7 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="w-full flex flex-col items-center px-4 sm:px-6 md:px-8 space-y-12 sm:space-y-16 mt-24 sm:mt-28">
+      <main className="w-full flex flex-col items-center px-4 sm:px-6 md:px-8 space-y-12 sm:space-y-16 mt-24 sm:mt-28*">
         <NearestDate />
       
         <NewMain/>

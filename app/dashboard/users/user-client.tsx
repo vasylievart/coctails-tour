@@ -13,7 +13,7 @@ type Props = {
 
 export default function UserClient({ authUser, initialUsers }: Props) {
   const [users, setUsers] = useState<User[]>(initialUsers);
-
+  console.log(initialUsers);
   async function handleDelete(id: string) {
     await deleteAdminUser(id);
     setUsers((prev) => prev.filter((u) => u.id !== id));

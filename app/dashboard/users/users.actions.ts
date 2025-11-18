@@ -1,6 +1,5 @@
 "use server";
 
-
 import { supabaseAdmin } from "@/utils/supabase/admin";
 import { createClient } from "@/utils/supabase/server";
 import type { User } from "@supabase/auth-js";
@@ -38,6 +37,9 @@ export async function createAdminUser(formData: FormData) {
   const { data, error } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,
+    user_metadata:{
+      role:"admin",
+    },
     email_confirm: true,
   });
 

@@ -9,13 +9,10 @@ export default function LoginPage() {
           <label htmlFor="password">Password:</label>
           <input className='border border-gray-400 rounded-md shadow-md' id="password" name="password" type="password" required />
           <div className='flex justify-between'>
-            <button className='p-2 border border-gray-400 rounded-lg shadow-lg' formAction={login}>Log in</button>
-            <button className='p-2 border border-gray-400 rounded-lg shadow-lg' formAction={signup}>Sign up</button>
+            <button className='w-full p-2 border border-gray-400 rounded-lg shadow-lg' formAction={login}>Log in</button>
           </div> 
         </form>
       </div>
     </div>
-    
-    
   )
 }
