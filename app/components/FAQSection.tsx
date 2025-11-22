@@ -76,7 +76,7 @@ export default function FAQSection() {
                 alt="Barcelona's Pavement"
                 width={48}
                 height={48}
-                loading="lazy"
+                loading="eager"
               />
             </button>
 
