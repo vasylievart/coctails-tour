@@ -59,7 +59,13 @@ const BookingHourSelector = ({isoDate}:BookingHourSelectorProps) => {
         Book Now
       </motion.button>
   
-      <BookingPopupContainer isOpen={showPopup} specifiedDate={isoDate} mode={"create"} selectedHour={selectedHour} onClose={() => setShowPopup(false)}/>
+      <BookingPopupContainer 
+        isOpen={showPopup}  
+        specifiedDate={isoDate}
+        mode={"create"} 
+        selectedHour={selectedHour} 
+        onClose={() => setShowPopup(false)}
+        />
     </div>
   )
 }

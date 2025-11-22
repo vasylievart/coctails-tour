@@ -25,11 +25,3 @@ export type Slots = {
   disabled?: boolean;
   price?: number;
 }
-
-export type BookingForm = {
-  full_name: string;
-  email: string;
-  phone: string;
-  country_code: string;
-  comment: string;
-}

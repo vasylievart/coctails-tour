@@ -53,7 +53,7 @@ export default function TermsOfService() {
           ))}
         </nav>
 
-        <Image width={163} height={194} className="absolute z-10 top-[2%] left-[28%] w-[96px]" src="/images/escudo_barcelona.png" alt="Coat of Arms Barcelona" />
+        <Image width={163} height={194} className="absolute hidden lg:block z-10 top-[2%] left-[28%] w-[96px]" src="/images/escudo_barcelona.png" alt="Coat of Arms Barcelona" />
         <section id="about" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">1. About Us</h2>
           <p>
@@ -67,7 +67,7 @@ export default function TermsOfService() {
             experiences.
           </p>
         </section>
-        <Image width={480} height={165} className="absolute w-[480px] top-[8%] right-[4%] z-10 rotate-12" src="/images/coctails_header.webp" alt="logo" />
+        <Image width={480} height={165} className="absolute hidden lg:block w-[480px] top-[8%] right-[4%] z-10 rotate-12" src="/images/coctails_header.webp" alt="logo" />
 
 
         <section id="age" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
@@ -82,7 +82,7 @@ export default function TermsOfService() {
             issued.
           </p>
         </section> 
-        <Image width={64} height={60} className="absolute top-[92%] left-[18%] z-10" src="/images/over_18_years.webp" alt="Age restriction" />
+        <Image width={64} height={60} className="absolute hidden lg:block top-[92%] left-[18%] z-10" src="/images/over_18_years.webp" alt="Age restriction" />
 
         <section id="booking" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">3. Booking and Payment</h2>
@@ -131,7 +131,7 @@ export default function TermsOfService() {
             these rules.
           </p>
         </section>
-        <Image width={240} height={325} className="absolute left-[2%] top-[150%] w-[240px] -rotate-12" src="/images/pan_con_tomate.webp" alt="Brread with tomatoes" />
+        <Image width={240} height={325} className="absolute hidden lg:block left-[2%] top-[150%] w-[240px] -rotate-12" src="/images/pan_con_tomate.webp" alt="Brread with tomatoes" />
 
         <section id="safety" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">6. Health and Safety</h2>
@@ -157,7 +157,7 @@ export default function TermsOfService() {
             We recommend having travel insurance covering these risks.
           </p>
         </section>
-        <Image width={280} height={373} className="absolute w-[280px] right-[12%] top-[240%] rotate-6 z-10" src="/images/coctail_5.png" alt="Coctail" />
+        <Image width={280} height={373} className="absolute hidden lg:block w-[280px] right-[12%] top-[240%] rotate-6 z-10" src="/images/coctail_5.png" alt="Coctail" />
 
         <section id="media" className="mb-10 bg-orange-100 border-2 border-black rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-2">8. Photography and Media</h2>

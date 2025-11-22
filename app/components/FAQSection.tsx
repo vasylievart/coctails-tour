@@ -1,12 +1,15 @@
 "use client";
 
-import {useState } from "react";
+import {useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { faqs } from "../data/faq";
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
 
   const toggle = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -39,8 +42,8 @@ export default function FAQSection() {
           loading="lazy"
         />
       </h2>
-
-      <div className="space-y-4 sm:space-y-4">
+     {mounted && (
+       <div className="space-y-4 sm:space-y-4">
         {faqs.map((faq, index) => (
           <div
             key={index}
@@ -80,10 +83,10 @@ export default function FAQSection() {
             <AnimatePresence  initial={false}>
               {openIndex === index && (
                 <motion.div
-                  initial={{ height: 0, opacity: 0 }}
+                  initial={false}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.6 }}
                   className="flex flex-col px-6 pb-4 bg-white text-amber-900"
                 >
                   <p className="text-sm sm:text-base md:text-lg mb-3 sm:mb-4">{faq.answer}</p>
@@ -110,7 +113,7 @@ export default function FAQSection() {
                               opacity: 1,
                               y:0,
                               rotate:0,
-                              transition: {duration: 0.3},
+                              transition: {duration: 0.6},
                             }
                           }}
                           whileHover={{scale: 1.1}}
@@ -134,6 +137,8 @@ export default function FAQSection() {
           </div>
         ))}
       </div>
+     )}
+      
     </section>
   );
 }

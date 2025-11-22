@@ -6,8 +6,8 @@ import { Booking } from "@/app/utils/types";
 
 interface BookingPopupContainerProps {
   isOpen: boolean;
-  specifiedDate: string | undefined;
-  selectedHour?: string | undefined;
+  specifiedDate?: string;
+  selectedHour?: string;
   open?: boolean;
   bookingData?: Booking; 
   capacity_left?: number | undefined;

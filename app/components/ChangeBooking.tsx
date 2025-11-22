@@ -105,7 +105,7 @@ const handleClosePopup = () => {
 
         <Button 
           className="
-            w-full mt-3 py-3 sm:py-4 text-lg sm:text-xl font-semibold
+            w-full mt-3 p-6  text-lg sm:text-xl font-semibold
             bg-amber-700/70 border-2 border-amber-100 text-white rounded-xl
             hover:bg-amber-800 hover:border-amber-100 hover:text-amber-100
             focus:ring-2 focus:ring-amber-100 shadow-md transition-all

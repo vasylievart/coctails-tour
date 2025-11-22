@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Booking } from "@/app/utils/types";
 import { generateBookingPdf } from "@/app/actions/generateBookingPdf";
-import { useInitializeBookingForm } from "./hooks/useInitializeBookingForm";
 import { useCreateBookingPdf } from "./hooks/useCreateBookingPdf";
 
 
@@ -30,12 +29,22 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, onCl
   //Set states for form data
   const {formData, setFormData, isoAndCode} = useBookingState();
   const [privateTour, setPrivateTour] = useState<boolean>(false);
-   console.log(privateTour)
   // add states for generate pdf
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
 
-  useInitializeBookingForm({bookingData, setFormData, setPrivateTour})
- 
+  useEffect(() => {
+    if (bookingData) {
+      setFormData({
+        full_name: bookingData.full_name,
+        email: bookingData.email,
+        phone: bookingData.phone,
+        country_code: bookingData.country_code,
+        comment: bookingData.comment || "",
+      });
+      setPrivateTour(bookingData.private_tour);
+    }
+  }, [bookingData, setFormData]);
+
   useCreateBookingPdf({pdfBase64});
 
   const handleCancel = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -287,9 +296,9 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, onCl
             Private
           </Label>
           <Checkbox
-            checked={privateTour}
-            onCheckedChange={(checked) => setPrivateTour(Boolean(checked))}
             id="private"
+            checked={privateTour}
+            onCheckedChange={(checked) => setPrivateTour(checked === true)}
           />
         </div>
       </>
