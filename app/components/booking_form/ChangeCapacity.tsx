@@ -33,7 +33,7 @@ const ChangeCapacity = ({
   const [bookedPlaces, setBookedPlaces] = usePersistentState<number>("booked-places", 0); 
   const [places, setAvalablePlaces] = usePersistentState<number[]>("booking-places", []); 
   const [price, setPrice] = useState<number>(0); 
-
+  console.log("Available places:", places);
   useEffect(() => { 
     if (!isoDate || !selectedHour) return; 
     const fetchSlotData = async () => { 
@@ -88,6 +88,7 @@ const ChangeCapacity = ({
       } if (cap < 1) cap = 1;
 
       const placesArray = Array.from({ length: cap }, (_, i) => i + 1); 
+      console.log(placesArray)
       setAvalablePlaces(placesArray); 
     }, [mode, capacityInit, capacityLeft, bookingDate?.people_count, setAvalablePlaces]); 
   

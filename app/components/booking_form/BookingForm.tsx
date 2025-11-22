@@ -8,6 +8,10 @@ import { useBookingState } from "./hooks/useBookingState";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Booking } from "@/app/utils/types";
+import { generateBookingPdf } from "@/app/actions/generateBookingPdf";
+import { useInitializeBookingForm } from "./hooks/useInitializeBookingForm";
+import { useCreateBookingPdf } from "./hooks/useCreateBookingPdf";
+
 
 interface ReusablePopupProps {
   bookingData?: Booking; 
@@ -26,19 +30,13 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, onCl
   //Set states for form data
   const {formData, setFormData, isoAndCode} = useBookingState();
   const [privateTour, setPrivateTour] = useState<boolean>(false);
+   console.log(privateTour)
+  // add states for generate pdf
+  const [pdfBase64, setPdfBase64] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (bookingData) {
-      setFormData({
-        full_name: bookingData.full_name,
-        email: bookingData.email,
-        phone: bookingData.phone,
-        country_code: bookingData.country_code,
-        comment: bookingData.comment || "",
-      });
-      setPrivateTour(bookingData.private_tour);
-    }
-  }, [bookingData, setFormData]);
+  useInitializeBookingForm({bookingData, setFormData, setPrivateTour})
+ 
+  useCreateBookingPdf({pdfBase64});
 
   const handleCancel = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -58,74 +56,120 @@ const BookingForm = ({bookingData,selectedDate, bookedPlaces, selectedHour, onCl
   }
 
   const handleConfirm = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const result = bookingSchema.safeParse(formData);
-    if (!result.success) {
-      toast.error("Please fill all required fields correctly.");
-      return;
-    }
+  const result = bookingSchema.safeParse(formData);
+  if (!result.success) {
+    toast.error("Please fill all required fields correctly.");
+    return;
+  }
 
-    const validatedData = result.data;
+  const validatedData = result.data;
 
-    try {
-      if (mode === "edit" && bookingData?.id) {   
-        const formattedDate = selectedDate 
-        ? format(selectedDate, "yyyy-MM-dd") 
+  try {
+    let bookingId = bookingData?.id;
+    let finalDate = "";
+    let finalHour = "";
+    let finalPeopleCount = bookedPlaces || bookingData?.people_count;
+
+    if (mode === "edit" && bookingData?.id) {
+
+      finalDate = selectedDate
+        ? format(selectedDate, "yyyy-MM-dd")
         : bookingData.booking_date;
-        await supabase.rpc("update_booking_with_slot", {
-          p_booking_id: bookingData.id,
-          p_full_name: validatedData.full_name,
-          p_email: validatedData.email,
-          p_phone: validatedData.phone,
-          p_country_code: validatedData.country_code,
-          p_people_count: bookedPlaces || bookingData.people_count,
-          p_booking_date: formattedDate,
-          p_booking_hour: selectedHour || bookingData.booking_hour,
-          p_comment: validatedData.comment,
-          p_private_tour: privateTour
-        });
 
-        toast.success("Booking updated successfully!");
-        setFormData({
-          full_name: "",
-          email: "",
-          country_code: "",
-          phone: "",
-          comment: "",
-        });
-        localStorage.removeItem("booking-form");
-        onClose?.();
-      } else {
-        // 🧩 Create new booking
-        const { data, error } = await supabase.rpc("book_slot_atomic", {
-          p_comment: validatedData.comment,
-          p_country_code: validatedData.country_code,
-          p_email: validatedData.email,
-          p_full_name: validatedData.full_name,
-          p_people_count: bookedPlaces,
-          p_phone: validatedData.phone,
-          p_slot_date: isoDate,
-          p_slot_hour: selectedHour,
-          p_private_tour: privateTour
-        });
+      finalHour = selectedHour || bookingData.booking_hour;
 
-        if (error || !data?.success) {
-          console.error(error);
-          toast.error(data?.error || "Failed to create booking");
-          return;
-        }
+      const { data, error } = await supabase.rpc("update_booking_with_slot", {
+        p_booking_id: bookingData.id,
+        p_full_name: validatedData.full_name,
+        p_email: validatedData.email,
+        p_phone: validatedData.phone,
+        p_country_code: validatedData.country_code,
+        p_people_count: finalPeopleCount,
+        p_booking_date: finalDate,
+        p_booking_hour: finalHour,
+        p_comment: validatedData.comment,
+        p_private_tour: privateTour,
+      });
 
-        toast.success(data.message || "Booking created successfully!");
-        onClose?.();
-        localStorage.clear();
-  
+      if (error) {
+        console.error(error);
+        toast.error("Failed to update booking");
+        return;
       }
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      toast.error("Something went wrong. Please try again.");
+
+      // Ensure bookingId and data exist
+      bookingId = data?.booking_id || bookingData.id;
+
+      toast.success("Booking updated successfully!");
+
+    } else {
+      const { data, error } = await supabase.rpc("book_slot_atomic", {
+        p_comment: validatedData.comment,
+        p_country_code: validatedData.country_code,
+        p_email: validatedData.email,
+        p_full_name: validatedData.full_name,
+        p_people_count: bookedPlaces,
+        p_phone: validatedData.phone,
+        p_slot_date: isoDate,
+        p_slot_hour: selectedHour,
+        p_private_tour: privateTour,
+      });
+
+      if (error || !data?.success) {
+        console.error(error);
+        toast.error(data?.error || "Failed to create booking");
+        return;
+      }
+
+      toast.success(data.message || "Booking created successfully!");
+
+      bookingId = data.booking_id;
+      finalDate = isoDate!;
+      finalHour = selectedHour!;
+      finalPeopleCount = bookedPlaces;
     }
-  };
+    
+    const pdfId = bookingId
+      ? bookingId
+      : String(Math.floor(Math.random() * 1000000));
+    console.log(pdfId);
+
+    const pdfPayload = {
+      id: pdfId,
+      full_name: validatedData.full_name,
+      email: validatedData.email,
+      country_code: validatedData.country_code,
+      phone: validatedData.phone,
+      people_count: finalPeopleCount,
+      comment: validatedData.comment,
+      booking_date: finalDate,
+      booking_hour: finalHour,
+      private_tour: privateTour,
+      updated: mode === "edit",
+    };
+
+    const pdf = await generateBookingPdf(pdfPayload);
+    setPdfBase64(pdf);
+    setTimeout(() => onClose?.(), 10);
+    setFormData({
+      full_name: "",
+      email: "",
+      country_code: "",
+      phone: "",
+      comment: "",
+    });
+
+    localStorage.removeItem("booking-form");
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    toast.error("Something went wrong. Please try again.");
+  }
+};
+
+  
+
   
       return (
       <>
