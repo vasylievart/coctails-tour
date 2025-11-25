@@ -38,6 +38,7 @@ import Footer from "./components/Footer";
 import NearestDate from "./components/NearestDate";
 import BookingContainer from "./components/booking_form/BookingContainer";
 import NewMain from "./components/NewMain";
+import NewFaq from "./components/NewFaq";
 
 
 // 💤 Lazy load non-critical components
@@ -80,7 +81,8 @@ export default function Home() {
         </section>
 
         {/* FAQ (lazy loaded) */}
-        <FAQSection />
+        {/*<FAQSection />*/}
+        <NewFaq/>
 
         {/* Booking management (lazy loaded) */}
         <ChangeBooking />

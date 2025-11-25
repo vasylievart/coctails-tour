@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { faqs } from "../data/faq";
 
-export default function FAQSection() {
+const FAQSection = () =>  {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -142,3 +142,5 @@ export default function FAQSection() {
     </section>
   );
 }
+
+export default FAQSection;
