@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/deactivate-bookings",
+      "schedule": "0 3 * * *"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ParallaxFrame from "./ParallaxFrame";
@@ -24,7 +24,7 @@ const Main = () => {
   const postMarkOneRef = useRef<HTMLImageElement>(null);
   const postMarkTwoRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const elements = [
       { ref: streetOneRef, from: { y: 200, rotate: -90}, to: { y: 0, rotate: 24 } },
       { ref: streetTwoRef, from: { y: 240, rotate: -60 }, to: { y: 0, rotate: 12} },
@@ -38,7 +38,8 @@ const Main = () => {
       { ref: photoRef, from: { y: 500}, to: { y: 0, rotate: 3 }},
       { ref: escudoRef, from: {y: 372, rotate: -35}, to: {y: 0, rotate: -6}},
       { ref: panConTomateRef, from: {y: 396, rotate: -35}, to: {y: 0, rotate: 9}},
-      { ref: postMarkOneRef, from: {y: 400, rotate: -35}, to: {y:0, rotate: -12}}
+      { ref: postMarkOneRef, from: {y: 400, rotate: -35}, to: {y:0, rotate: -12}},
+      { ref: postMarkOneRef, from: {y: 400, rotate: -35}, to: {y:0, rotate: -12}},
     ];
 
     elements.forEach(({ ref, from, to }) => {

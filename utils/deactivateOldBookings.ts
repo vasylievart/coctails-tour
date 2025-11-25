@@ -1,4 +1,3 @@
-// utils/deactivateOldBookings.ts
 "use server"
 
 import { createClient } from "./supabase/client";

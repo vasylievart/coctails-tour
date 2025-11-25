@@ -38,11 +38,11 @@ import Footer from "./components/Footer";
 import NearestDate from "./components/NearestDate";
 import BookingContainer from "./components/booking_form/BookingContainer";
 import NewMain from "./components/NewMain";
-import NewFaq from "./components/NewFaq";
+
 
 
 // 💤 Lazy load non-critical components
-const FAQSection = dynamic(() => import("./components/FAQSection"), {
+const NewFaq = dynamic(() => import("./components/NewFaq"), {
   loading: () => <p className="text-white text-center py-8">Loading FAQs...</p>,
 });
 const ChangeBooking = dynamic(() => import("./components/ChangeBooking"), {
@@ -81,7 +81,6 @@ export default function Home() {
         </section>
 
         {/* FAQ (lazy loaded) */}
-        {/*<FAQSection />*/}
         <NewFaq/>
 
         {/* Booking management (lazy loaded) */}

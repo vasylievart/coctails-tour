@@ -39,7 +39,7 @@ const Main = () => {
       { ref: escudoRef, from: {y: 372, rotate: -35}, to: {y: 0, rotate: -6}},
       { ref: panConTomateRef, from: {y: 396, rotate: -35}, to: {y: 0, rotate: 9}},
       { ref: postMarkOneRef, from: {y: 400, rotate: -35}, to: {y:0, rotate: -12}},
-      { ref: postMarkOneRef, from: {y: 420, rotate: -35}, to: {y:0, rotate: -12}}
+      { ref: postMarkTwoRef, from: {y: 420, rotate: -35}, to: {y:0, rotate: -12}}
     ];
 
     elements.forEach(({ ref, from, to }) => {
