@@ -301,7 +301,8 @@ const ImageAction = ({ index, openIndex, setOpenIndex, faq }: ImageProps) => {
                       width={img.width}
                       height={img.height}
                       className="w-16 sm:w-4 md:w-8 lg:w-12 h-auto object-contain"
-                      loading="lazy"
+                      //loading="lazy"
+                      priority
                     />
                   </div>
                 ))}
