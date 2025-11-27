@@ -63,7 +63,7 @@ export default function Home() {
           font-sans
         ">
       {/* Sticky Header */}
-      <header className="w-full z-40">
+      <header className="w-full z-20">
         <Header />
       </header>
 

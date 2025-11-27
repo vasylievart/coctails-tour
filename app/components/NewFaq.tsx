@@ -17,7 +17,7 @@ export default function NewFaq() {
       className="
         w-[95%] sm:w-[90%] md:max-w-3xl
         mx-auto py-10 sm:py-14 md:py-16 px-3 sm:px-6
-        z-40
+        z-30
       "
     >
       <h2
